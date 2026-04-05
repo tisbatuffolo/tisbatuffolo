@@ -1,0 +1,145 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f9fafd;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+header {
+  background: #e2eaff;
+  padding: 20px 0 10px 0;
+  text-align: center;
+}
+
+h1 .home-link {
+  text-decoration: none;
+  color: #2332bb;
+  font-size: 2.3em;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+h1 .home-link:hover {
+  color: #547bfc;
+}
+
+footer {
+  color: #888;
+  text-align: center;
+  margin: 16px 0 8px 0;
+}
+
+.grid-riquadri {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  height: 530px;      /* forza la griglia a stare "compressa" */
+  margin: 36px auto 10px auto;
+  padding: 0 10px;
+  align-items: center;
+  justify-items: center;
+}
+
+.riquadro {
+  background: #fff;
+  border: 3px solid #2366c6;
+  border-radius: 25px;
+  box-shadow: 0 4px 18px rgba(26,50,120,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 310px;
+  height: 240px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  /* evitare overflow di titolo o immagine */
+  overflow: hidden;
+}
+
+.riquadro:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 24px rgba(26,50,120,0.16);
+}
+
+.riquadro-titolo {
+  font-size: 1.23em;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 8px;
+  margin-top: 10px;
+  color: #1b2566;
+  letter-spacing: 1px;
+}
+
+.riquadro-link {
+  text-decoration: none;
+  color: #1b2566;
+  width: 100%;
+  display: block;
+}
+
+.riquadro-link:hover .riquadro-titolo {
+  color: #547bfc;
+  text-decoration: underline;
+}
+
+.riquadro img {
+  width: 95%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 2px solid #9ac6f8;
+  box-shadow: 0 2px 8px rgba(26,50,120,0.09);
+  display: block;
+  margin: 0 auto;
+  margin-top: 8px;
+}
+
+@media (max-width: 1200px) {
+  .grid-riquadri {
+    max-width: 980px;
+  }
+  .riquadro {
+    width: 260px;
+    height: 200px;
+  }
+  .riquadro img {
+    height: 100px;
+  }
+}
+
+@media (max-width: 900px) {
+  .grid-riquadri {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    max-width: 660px;
+    height: unset;
+  }
+  .riquadro {
+    width: 260px;
+    height: 180px;
+  }
+  .riquadro img {
+    height: 90px;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid-riquadri {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+    padding: 0 2vw;
+  }
+  .riquadro {
+    width: 95vw;
+    max-width: 320px;
+    height: 120px;
+  }
+  .riquadro img {
+    height: 50px;
+  }
+}
