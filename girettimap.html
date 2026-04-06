@@ -4,18 +4,86 @@
   <meta charset="UTF-8">
   <title>GirettiMap</title>
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    header h1 {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    header h1 a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+    }
+
+    .grid-riquadri {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 1000px;
+      margin: 20px auto;
+    }
+
+    .riquadro {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .riquadro:hover {
+      transform: scale(1.03);
+    }
+
+    .riquadro-link {
+      text-decoration: none;
+      color: black;
+      display: block;
+    }
+
+    .riquadro img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #ddd;
+    }
+
+    .riquadro-titolo {
+      padding: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    @media (max-width: 800px) {
+      .grid-riquadri {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .grid-riquadri {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
   <h1>
-    <a href="index.html" class="home-link">Panda Blog</a>
+    <a href="index.html">Ti sbattufoblog</a> - GirettiMap
   </h1>
 
-  <p>
+  <p style="text-align:center;">
     <a href="https://www.outdooractive.com/it/list/girettimap/240115709" target="_blank">
-      Vai alla raccolta completa su Outdooractive
+      guarda tutti i giretti nella GirettiMap!
     </a>
   </p>
 </header>
@@ -30,31 +98,33 @@
 
 </main>
 
-<footer>
+<footer style="text-align:center; margin-top: 40px;">
   © 2026 Panda Blog
 </footer>
 
+<!-- 🔥 IMPORTANTE: carica il file JS -->
+<script src="giri.js"></script>
+
 <script>
-fetch("giri.json")
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById("contenitore-giri");
+const container = document.getElementById("contenitore-giri");
 
-    data.forEach(giro => {
-      const card = document.createElement("div");
-      card.className = "riquadro";
+GIRI.slice(0, 9).forEach(giro => {
+  const card = document.createElement("div");
+  card.className = "riquadro";
 
-      card.innerHTML = `
-        <a href="${giro.link}" target="_blank" class="riquadro-link">
-          <img src="${giro.img}" alt="${giro.titolo}">
-          <div class="riquadro-titolo">${giro.titolo}</div>
-        </a>
-      `;
+  const imgSrc = giro.img && giro.img !== "" 
+    ? giro.img 
+    : "https://via.placeholder.com/800x600?text=No+Image";
 
-      container.appendChild(card);
-    });
-  })
-  .catch(err => console.error("Errore caricamento giri:", err));
+  card.innerHTML = `
+    <a href="${giro.link}" target="_blank" class="riquadro-link">
+      <img src="${imgSrc}" alt="${giro.titolo}">
+      <div class="riquadro-titolo">${giro.titolo}</div>
+    </a>
+  `;
+
+  container.appendChild(card);
+});
 </script>
 
 </body>
