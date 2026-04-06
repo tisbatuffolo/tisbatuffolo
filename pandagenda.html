@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Ti Sbatuffoblog - Pandagenda</title>
+  <link rel="stylesheet" href="stile.css">
+  <style>
+    .calendar-container {
+      max-width: 900px;
+      margin: 30px auto 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 20px;
+      border: 3px solid #2366c6;
+      box-shadow: 0 4px 18px rgba(26,50,120,0.08);
+    }
+    table.calendar { width: 100%; border-collapse: collapse; text-align: center; }
+    table.calendar th { background: #2366c6; color: #fff; padding: 10px; }
+    table.calendar td { border: 1px solid #ddd; height: 80px; vertical-align: top; padding: 4px; }
+    .calendar-nav { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold; font-size: 1.2em; align-items: center; }
+    .calendar-nav button {
+      background: #2366c6; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;
+    }
+    .calendar-nav button:hover { background: #547bfc; }
+    .activities-container {
+      max-width: 900px; margin: 20px auto 50px auto;
+      background: #fff; padding: 15px 20px; border-radius: 20px;
+      border: 3px solid #2366c6; box-shadow: 0 4px 18px rgba(26,50,120,0.08);
+    }
+    .activities-container h3 { text-align: center; margin-bottom: 12px; }
+    .activities-list { list-style: none; padding: 0; margin: 0; }
+    .activities-list li { padding: 6px 8px; border-bottom: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="index.html" class="home-link">Ti Sbatuffoblog</a> - Pandagenda</h1>
+  </header>
+
+  <main>
+    <div class="calendar-container">
+      <div class="calendar-nav">
+        <button id="prev-month">&lt;</button>
+        <span id="month-year"></span>
+        <button id="next-month">&gt;</button>
+      </div>
+      <table class="calendar">
+        <thead>
+          <tr>
+            <th>Lun</th><th>Mar</th><th>Mer</th><th>Gio</th><th>Ven</th><th>Sab</th><th>Dom</th>
+          </tr>
+        </thead>
+        <tbody id="calendar-body"></tbody>
+      </table>
+    </div>
+
+    <div class="activities-container">
+      <h3>Attività del mese</h3>
+      <ul class="activities-list" id="activities-list"></ul>
+    </div>
+  </main>
+
+  <footer>© 2026 Il Panda Blog</footer>
+
+  <script src="agenda.js"></script>
+
+  <script>
+    const today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth(); // 0-based
+
+    const calendarBody = document.getElementById('calendar-body');
+    const monthYearLabel = document.getElementById('month-year');
+    const activitiesList = document.getElementById('activities-list');
+
+    function generateCalendar(year, month) {
+      calendarBody.innerHTML = '';
+      const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // lunedì=0
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      monthYearLabel.textContent = new Date(year, month).toLocaleString('it-IT', { month: 'long', year: 'numeric' });
+
+      let date = 1;
+      for (let i = 0; i < 6; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < 7; j++) {
+          const cell = document.createElement('td');
+          if (i === 0 && j < firstDay) { cell.innerHTML = ''; }
+          else if (date > daysInMonth) { cell.innerHTML = ''; }
+          else {
+            const key = `${year}-${String(month + 1).padStart(2,'0')}-${String(date).padStart(2,'0')}`;
+            cell.textContent = date;
+            if (events[key]) {
+              const span = document.createElement('div');
+              span.textContent = events[key];
+              span.style.fontSize = "0.8em";
+              span.style.color = "#2366c6";
+              cell.appendChild(span);
+            }
+            date++;
+          }
+          row.appendChild(cell);
+        }
+        calendarBody.appendChild(row);
+      }
+
+      updateActivities();
+    }
+
+    function updateActivities() {
+      activitiesList.innerHTML = '';
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const isCurrentMonth = (year === today.getFullYear() && month === today.getMonth());
+      for (let d = 1; d <= daysInMonth; d++) {
+        const key = `${year}-${String(month + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const value = events[key];
+        if (value) {
+          if (!isCurrentMonth || d >= today.getDate()) { // mostra tutti se mese diverso, altrimenti solo giorni futuri
+            const li = document.createElement('li');
+            li.textContent = `${d} ${new Date(year, month).toLocaleString('it-IT', { month: 'long' })}: ${value}`;
+            activitiesList.appendChild(li);
+          }
+        }
+      }
+    }
+    if (!activitiesList.hasChildNodes()) {
+    const li = document.createElement('li');
+    li.textContent = "Nessuna";
+    activitiesList.appendChild(li);
+    }
+
+    document.getElementById('prev-month').addEventListener('click', () => {
+      month--; if (month < 0) { month = 11; year--; }
+      generateCalendar(year, month);
+    });
+    document.getElementById('next-month').addEventListener('click', () => {
+      month++; if (month > 11) { month = 0; year++; }
+      generateCalendar(year, month);
+    });
+
+    generateCalendar(year, month);
+  </script>
+</body>
+</html>
