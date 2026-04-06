@@ -2,20 +2,60 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Blog - GirettiMap</title>
-  <link rel="stylesheet" href="stile.css">
+  <title>GirettiMap</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <header>
-    <h1 class="pagina-titolo" style="text-align:center;">
-      <a href="index.html" class="back-home-link">Blog</a> - GirettiMap
-    </h1>
-  </header>
-  <main style="text-align:center; margin-top:40px;">
-    <a href="https://out.ac/l9lkTc" target="_blank" rel="noopener noreferrer" class="link-girettimap">link GirettiMap</a>
-  </main>
-  <footer style="text-align: center;">
-    © 2026 Il Panda Blog
-  </footer>
+
+<header>
+  <h1>
+    <a href="index.html" class="home-link">Panda Blog</a>
+  </h1>
+
+  <p>
+    <a href="https://www.outdooractive.com/it/list/girettimap/240115709" target="_blank">
+      Vai alla raccolta completa su Outdooractive
+    </a>
+  </p>
+</header>
+
+<main>
+
+  <h2 style="text-align: center; margin-top: 20px;">
+    Ultimi Giri
+  </h2>
+
+  <div class="grid-riquadri" id="contenitore-giri"></div>
+
+</main>
+
+<footer>
+  © 2026 Panda Blog
+</footer>
+
+<script>
+fetch("giri.json")
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById("contenitore-giri");
+
+    data.forEach(giro => {
+      const card = document.createElement("div");
+      card.className = "riquadro";
+
+      card.innerHTML = `
+        <a href="${giro.link}" target="_blank" class="riquadro-link">
+          <img src="${giro.img}" alt="${giro.titolo}">
+          <div class="riquadro-titolo">${giro.titolo}</div>
+        </a>
+      `;
+
+      container.appendChild(card);
+    });
+  })
+  .catch(err => console.error("Errore caricamento giri:", err));
+</script>
+
 </body>
 </html>
