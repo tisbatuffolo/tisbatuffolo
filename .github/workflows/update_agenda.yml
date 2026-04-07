@@ -8,6 +8,10 @@ jobs:
   update:
     runs-on: ubuntu-latest
 
+    # ✅ QUESTA RIGA RISOLVE L'ERRORE NODE.js
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,5 +25,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add pandagenda/agenda.json
-          git commit -m "Aggiornamento Pandagenda automatico"
+          git commit -m "Aggiornamento Pandagenda automatico" || echo "Nessuna modifica da committare"
           git push
