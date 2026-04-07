@@ -3,22 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>GirettiMap</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../stile.css">
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-
+    /* Titolo pagina identico a index.html */
     header h1 {
       text-align: center;
       margin-top: 20px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #2332bb;
+      font-size: 2.3em;
+      font-weight: bold;
     }
 
-    header h1 a {
+    header h1 a, header h1 span {
+      color: #2332bb;
       text-decoration: none;
-      color: black;
-      font-weight: bold;
+    }
+
+    header h1 a:hover, header h1 span:hover {
+      color: #547bfc;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
     }
 
     .grid-riquadri {
@@ -78,7 +86,8 @@
 
 <header>
   <h1>
-    <a href="index.html">Ti sbattufoblog</a> - GirettiMap
+    <a href="../index.html">SbatuffoBlog</a>
+    <span> - GirettiMap</span>
   </h1>
 
   <p style="text-align:center;">

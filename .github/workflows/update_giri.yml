@@ -2,8 +2,8 @@ name: Aggiorna GirettiMap
 
 on:
   schedule:
-      - cron: "0 0 * * *"    
-  workflow_dispatch:          # avvio manuale
+    - cron: "0 0 * * *"    
+  workflow_dispatch:
 
 jobs:
   update:
@@ -24,12 +24,12 @@ jobs:
 
     - name: Run script aggiorna-giri.py
       run: |
-        python3 aggiorna-giri.py
+        python3 girettimap/aggiorna-giri.py
 
     - name: Commit JSON aggiornato
       run: |
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions"
-        git add giri.json
-        git commit -m "Aggiornamento automatico giri.json" || echo "Nessuna modifica"
+        git add girettimap/giri.js
+        git commit -m "Aggiornamento automatico giri.js" || echo "Nessuna modifica"
         git push
