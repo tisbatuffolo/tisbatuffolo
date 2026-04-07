@@ -9,9 +9,25 @@
     font-family: Arial, sans-serif;
   }
 
+  header {
+    background: #e2eaff;              /* ✅ stesso azzurrino di index */
+    padding: 20px 0 10px 0;
+    text-align: center;
+  }
+
   header h1 {
     text-align: center;
     color: #2332bb;
+    font-size: 2em;
+  }
+
+  header h1 a {
+    color: #2332bb;
+    text-decoration: none;
+  }
+
+  header h1 a:hover {
+    color: #547bfc;
   }
 
   .calendar-container {
@@ -22,19 +38,22 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* ✅ BLOCCA LE COLONNE */
-  }
-
-  th, td {
-    border: 1px solid #ccc;
-    vertical-align: top;
-    padding: 4px;
-    text-align: center;
+    table-layout: fixed; /* ✅ colonne ferme */
   }
 
   th {
+    border: 1px solid #ccc;
     background: #2366c6;
     color: white;
+    padding: 6px;
+  }
+
+  /* ✅ GRIGLIA RIPRISTINATA */
+  td {
+    border: 1px solid #ccc;
+    vertical-align: top;
+    padding: 6px;
+    text-align: center;
   }
 
   .day-number {
@@ -42,17 +61,32 @@
     margin-bottom: 4px;
   }
 
+  /* ✅ AREA SCRITTURA INVISIBILE */
   textarea {
     width: 100%;
-    height: 50px;
+    height: 48px;
     resize: none;
     box-sizing: border-box;
     font-size: 0.85em;
+    border: none;
+    background: transparent;
+    outline: none;
+    overflow-y: auto;
+    text-align: center;
   }
 
   button {
+    background: #2366c6;
+    color: white;
+    border: none;
     padding: 6px 12px;
     margin: 6px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  button:hover {
+    background: #547bfc;
   }
 
   #loading {
@@ -65,7 +99,9 @@
 
 <body>
 <header>
-  <h1>SbatuffoBlog – Pandagenda</h1>
+  <h1>
+    <a href="../index.html">SbatuffoBlog</a> – <span>PandAgenda</span>
+  </h1>
 </header>
 
 <main class="calendar-container">
@@ -80,20 +116,25 @@
   <table>
     <thead>
       <tr>
-        <th>Lun</th><th>Mar</th><th>Mer</th>
-        <th>Gio</th><th>Ven</th><th>Sab</th><th>Dom</th>
+        <th>Lun</th>
+        <th>Mar</th>
+        <th>Mer</th>
+        <th>Gio</th>
+        <th>Ven</th>
+        <th>Sab</th>
+        <th>Dom</th>
       </tr>
     </thead>
     <tbody id="calendar-body"></tbody>
   </table>
 
-  <button id="save-github">Salva Pandagenda</button>
+  <button id="save-github">Salva la PandAgenda</button>
 
   <h3>Attività del mese</h3>
   <ul id="activities-list"></ul>
 </main>
 
-<footer style="text-align:center">© 2026 Il Panda Blog</footer>
+<footer style="text-align:center">© 2026 Ti SbatuffoBlog</footer>
 
 <script>
   const today = new Date();
@@ -107,15 +148,10 @@
 
   let events = {};
 
-  /* ✅ CARICAMENTO ROBUSTO agenda.json */
   async function loadAgenda() {
     try {
       const res = await fetch("agenda.json", { cache: "no-store" });
-      if (res.ok) {
-        events = await res.json();
-      } else {
-        events = {};
-      }
+      events = res.ok ? await res.json() : {};
     } catch {
       events = {};
     }
@@ -133,7 +169,12 @@
 
     let date = 1;
 
-    for (let i = 0; i < 6; i++) {
+    
+    const totalCells = firstDay + daysInMonth;
+    const totalRows = Math.ceil(totalCells / 7);
+
+    for (let i = 0; i < totalRows; i++) {
+
       const row = document.createElement("tr");
 
       for (let j = 0; j < 7; j++) {
@@ -182,9 +223,7 @@
       }
     }
 
-    if (!has) {
-      activities.innerHTML = "<li>Nessuna</li>";
-    }
+    if (!has) activities.innerHTML = "<li>Nessuna</li>";
   }
 
   document.getElementById("prev-month").onclick = () => {
@@ -206,7 +245,6 @@
     alert("Agenda salvata");
   };
 
-  /* ✅ INIT GARANTITO */
   (async () => {
     await loadAgenda();
     loading.style.display = "none";
