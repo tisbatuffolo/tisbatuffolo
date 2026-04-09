@@ -3,26 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Doccelunghe</title>
-  <link rel="stylesheet" href="stile.css">
   <style>
-    header h1 {
+    /* Header con sfondo azzurro */
+    header {
+      background-color: #e3f0ff;
+      padding: 20px 0;
       text-align: center;
-      margin-top: 20px;
+    }
+
+    header h1 {
+      margin: 0;
       font-family: 'Segoe UI', Arial, sans-serif;
-      color: #2332bb;
       font-size: 2.3em;
       font-weight: bold;
+      color: #2332bb;
     }
-    header h1 a {
+
+    header h1 a.home-link {
       color: #2332bb;
       text-decoration: none;
-    }
-    header h1 a:hover {
-      color: #547bfc;
-      text-decoration: none;
-    }
-    header h1 span {
-      color: #2332bb;
     }
 
     body {
@@ -91,6 +90,23 @@
       border-radius: 15px;
       box-shadow: 0 4px 18px rgba(26,50,120,0.08);
     }
+
+    /* Stile Bottone Aggiungi */
+    #btn-aggiungi {
+      margin-top: 25px;
+      padding: 15px 30px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+      transition: background 0.2s, transform 0.1s;
+    }
+    #btn-aggiungi:hover { background-color: #e60000; transform: translateY(-2px); }
+    #btn-aggiungi:active { transform: translateY(0); }
   </style>
 </head>
 <body>
@@ -103,8 +119,8 @@
 
   <main>
     <div class="counter-container">
-      <p id="docce-anno">Docce da inizio anno: 0</p>
-      <p id="docce-mese">Docce in questo mese: 0</p>
+      <p id="docce-anno">Caricamento...</p>
+      <p id="docce-mese">Caricamento...</p>
     </div>
 
     <div class="sezione-docce">
@@ -116,110 +132,150 @@
           <canvas id="docce-trend" width="400" height="240" style="background:#fff; border:3px solid #2366c6; border-radius:20px; box-shadow:0 4px 18px rgba(26,50,120,0.08);"></canvas>
           <div style="margin-top:10px; font-weight:bold; color:#2366c6;">Trend docce mese per mese</div>
           <img id="trend-image" src="" alt="Trend docce">
+          <button id="btn-aggiungi">Aggiungi Doccia 🚿</button>
         </div>
       </div>
     </div>
   </main>
 
-  <script src="docce.js"></script>
   <script>
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
-
-    const annoData = docceData[year] || {};
-    const docceMese = annoData[month] || 0;
-
-    let docceAnno = 0;
-    for(let m=1; m<=12; m++) docceAnno += annoData[m] || 0;
-
-    document.getElementById('docce-anno').textContent = `Docce da inizio anno: ${docceAnno}`;
-    document.getElementById('docce-mese').textContent = `Docce in questo mese: ${docceMese}`;
-
-    // Riquadri mese per mese
-    const grid = document.getElementById('docce-grid');
     const mesi = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
-    mesi.forEach((nome,i)=>{
-      const m = i+1;
-      const count = annoData[m] || 0;
-      const riquadro = document.createElement('div');
-      riquadro.className='riquadro';
-      const titolo = document.createElement('div');
-      titolo.className='riquadro-titolo';
-      titolo.textContent=nome;
-      const numero = document.createElement('div');
-      numero.style.fontSize='2.2em';
-      numero.style.fontWeight='bold';
-      numero.style.color='#2366c6';
-      numero.style.marginTop='20px';
-      numero.textContent=count;
-      riquadro.appendChild(titolo);
-      riquadro.appendChild(numero);
-      grid.appendChild(riquadro);
-    });
 
-    // Grafico trend
     const canvas = document.getElementById('docce-trend');
     const ctx = canvas.getContext('2d');
-    const padding = 30;
-    const w = canvas.width - padding*2;
-    const h = canvas.height - padding*2;
-    const values = mesi.map((_,i)=>annoData[i+1] || 0);
-    const maxVal = Math.max(...values,1);
+    const padding = 35;
+    const w = canvas.width - padding * 2;
+    const h = canvas.height - padding * 2;
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let docceData = {};
 
-    // Assi
-    ctx.strokeStyle="#2366c6"; ctx.lineWidth=2;
-    ctx.beginPath();
-    ctx.moveTo(padding,padding);
-    ctx.lineTo(padding,h+padding);
-    ctx.lineTo(w+padding,h+padding);
-    ctx.stroke();
+    // 1. CARICAMENTO DATI DA JSON
+    fetch('docce.json')
+      .then(res => res.json())
+      .then(data => {
+        docceData = data;
+        renderizzaPagina();
+      })
+      .catch(err => {
+        console.error("Errore caricando docce.json:", err);
+        document.getElementById('docce-anno').textContent = "Errore caricamento dati";
+      });
 
-    // Linea trend
-    ctx.strokeStyle="#547bfc"; ctx.lineWidth=3;
-    ctx.beginPath();
-    values.forEach((v,i)=>{
-      const x = padding + (i/(values.length-1))*w;
-      const y = padding + h - (v/maxVal)*h;
-      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-    });
-    ctx.stroke();
+    // 2. FUNZIONE DI RENDERING
+    function renderizzaPagina() {
+      const annoData = docceData[year] || {};
+      const docceMeseAttuale = annoData[month] || 0;
 
-    // Punti
-    ctx.fillStyle="#2366c6";
-    values.forEach((v,i)=>{
-      const x = padding + (i/(values.length-1))*w;
-      const y = padding + h - (v/maxVal)*h;
+      // Aggiornamento contatori testuali
+      let docceAnnoTotal = 0;
+      for(let m=1; m<=12; m++) docceAnnoTotal += (annoData[m] || 0);
+      document.getElementById('docce-anno').textContent = `Docce da inizio anno: ${docceAnnoTotal}`;
+      document.getElementById('docce-mese').textContent = `Docce in questo mese: ${docceMeseAttuale}`;
+
+      // Generazione Card Mesi
+      const grid = document.getElementById('docce-grid');
+      grid.innerHTML = "";
+      mesi.forEach((nome, i) => {
+        const m = i + 1;
+        const count = annoData[m] || 0;
+        const riquadro = document.createElement('div');
+        riquadro.className = 'riquadro';
+        
+        // Stile mese corrente: Bordo Rosso
+        if(m === month) riquadro.style.borderColor = "red";
+
+        const titolo = document.createElement('div');
+        titolo.className = 'riquadro-titolo';
+        titolo.textContent = nome;
+
+        const numero = document.createElement('div');
+        numero.style.fontSize = '2.2em';
+        numero.style.fontWeight = 'bold';
+        numero.style.marginTop = '20px';
+        // Stile mese corrente: Numero Rosso
+        numero.style.color = (m === month) ? "red" : "#2366c6";
+        numero.textContent = count;
+
+        riquadro.appendChild(titolo);
+        riquadro.appendChild(numero);
+        grid.appendChild(riquadro);
+      });
+
+      // Disegno Grafico Trend
+      const values = mesi.map((_, i) => annoData[i + 1] || 0);
+      const maxVal = Math.max(...values, 5);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Assi
+      ctx.strokeStyle = "#eee"; ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.arc(x,y,5,0,Math.PI*2);
-      ctx.fill();
-    });
+      ctx.moveTo(padding, padding); ctx.lineTo(padding, h + padding);
+      ctx.lineTo(w + padding, h + padding); ctx.stroke();
 
-    // Nomi mesi asse X
-    ctx.fillStyle="#1b2566";
-    ctx.font="12px Arial";
-    values.forEach((_,i)=>{
-      const x = padding + (i/(values.length-1))*w;
-      const y = h+padding+15;
-      ctx.fillText(mesi[i].substring(0,3),x-10,y);
-    });
+      // Linea trend
+      ctx.strokeStyle = "#547bfc"; ctx.lineWidth = 3;
+      ctx.beginPath();
+      values.forEach((v, i) => {
+        const x = padding + (i / (values.length - 1)) * w;
+        const y = padding + h - (v / maxVal) * h;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      });
+      ctx.stroke();
 
-    // Valori asse Y
-    ctx.fillStyle="#1b2566";
-    ctx.font="12px Arial";
-    const step = Math.ceil(maxVal/5);
-    for(let s=0; s<=maxVal; s+=step){
-      const y = padding + h - (s/maxVal)*h;
-      ctx.fillText(s,2,y+3);
+      // Punti (Mese corrente Rosso e più Grande)
+      values.forEach((v, i) => {
+        const x = padding + (i / (values.length - 1)) * w;
+        const y = padding + h - (v / maxVal) * h;
+        ctx.beginPath();
+        if(i + 1 === month) { 
+          ctx.arc(x, y, 8, 0, Math.PI * 2); 
+          ctx.fillStyle = "red"; 
+        } else { 
+          ctx.arc(x, y, 5, 0, Math.PI * 2); 
+          ctx.fillStyle = "#2366c6"; 
+        }
+        ctx.fill();
+        ctx.strokeStyle = "white"; ctx.lineWidth = 2; ctx.stroke();
+      });
+
+      // Etichette mesi
+      ctx.fillStyle = "#1b2566"; ctx.font = "10px Arial";
+      values.forEach((_, i) => {
+        const x = padding + (i / (values.length - 1)) * w;
+        ctx.fillText(mesi[i].substring(0, 3), x - 10, h + padding + 15);
+      });
+
+      // Immagine trend (Pandafelice/Pandatriste)
+      const trendImg = document.getElementById('trend-image');
+      const docceMesePrec = annoData[month - 1] || 0;
+      trendImg.src = (docceMeseAttuale >= docceMesePrec) ? "img/docciafelice.png" : "img/docciatriste.png";
     }
 
-    // ---- SEMPLIFICATO: mese corrente vs mese precedente ----
-    const trendImg = document.getElementById('trend-image');
-    const docceMesePrec = annoData[month-1] || 0;
-    if(docceMese >= docceMesePrec) trendImg.src = "img/docciafelice.png";
-    else trendImg.src = "img/docciatriste.png";
+    // 3. LOGICA BOTTONE AGGIUNGI (LOCALE + API)
+    document.getElementById('btn-aggiungi').addEventListener('click', () => {
+      // Aggiornamento immediato in memoria (ottimistico)
+      if(!docceData[year]) docceData[year] = {};
+      if(!docceData[year][month]) docceData[year][month] = 0;
+      docceData[year][month]++;
+      renderizzaPagina();
+
+      // Chiamata all'API Vercel per triggerare GitHub Action
+      fetch('/api/update_docceAPI', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(res => {
+        if(!res.ok) throw new Error("Errore salvataggio server");
+        console.log("Richiesta di aggiornamento inviata a GitHub");
+      })
+      .catch(err => {
+        console.error("Errore API:", err);
+        alert("Impossibile salvare il dato su GitHub. Riprova più tardi.");
+      });
+    });
   </script>
 </body>
 </html>

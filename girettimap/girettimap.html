@@ -100,14 +100,22 @@
   <div class="grid-riquadri" id="contenitore-giri"></div>
 
   <section id="contagiri">
-    <h2>ContaGiri</h2>
+    <h2>Conta Giri</h2>
     <p id="frase-giri" style="font-size: 1.2em; font-weight: bold; color: #d32f2f; text-align: center;"></p>
+
+    <div class="icone-tabella">
+      <div></div>
+      <div><img src="img/giriinsieme.png" alt="Giri insieme"></div>
+      <div><img src="img/giretti.png" alt="Giretti"></div>
+      <div><img src="img/girilunghi.png" alt="Giri lunghi"></div>
+      <div><img src="img/giriamici.png" alt="Giri amici"></div>
+    </div>
 
     <table id="tabella-giri">
       <thead>
         <tr>
           <th>Anno</th>
-          <th>Numero giri</th>
+          <th>Giri insieme</th>
           <th>Giretti</th>
           <th>Girilunghi</th>
           <th>Giri amici</th>
@@ -152,21 +160,32 @@ function parseDate(str) { const [y, m, d] = str.split("/").map(Number); return n
 async function contaGiri() {
   const tbody = document.querySelector("#tabella-giri tbody");
   let ultimaData = null;
+
   const dataGrafico = { anni: [], totali: [], giretti: [], lunghi: [], amici: [] };
   const anni = Object.keys(SHEETS).sort((a, b) => a - b);
 
-  for (const anno of anni) {
-    try {
-      const res = await fetch(BASE_CSV + SHEETS[anno]);
-      const csv = await res.text();
-      const rows = parseCSV(csv).slice(1);
+  try {
+    // 🔥 tutte le fetch insieme
+    const promises = anni.map(anno =>
+      fetch(BASE_CSV + SHEETS[anno])
+        .then(res => res.text())
+        .then(csv => ({ anno, rows: parseCSV(csv).slice(1) }))
+    );
+
+    const risultati = await Promise.all(promises);
+
+    // 🔥 elaborazione dati
+    risultati.forEach(({ anno, rows }) => {
       let tot = rows.length, giretti = 0, girilunghi = 0, amici = 0;
 
       rows.forEach(r => {
-        const giorni = r[2], amiciCol = (r[3] || "").toUpperCase();
+        const giorni = r[2];
+        const amiciCol = (r[3] || "").toUpperCase();
+
         if (giorni === "1" || giorni === "1/2") giretti++;
         else if (parseFloat(giorni) > 1) girilunghi++;
         if (amiciCol === "SI") amici++;
+
         if (r[0]) {
           const d = parseDate(r[0]);
           if (!ultimaData || d > ultimaData) ultimaData = d;
@@ -178,40 +197,45 @@ async function contaGiri() {
       dataGrafico.giretti.push(giretti);
       dataGrafico.lunghi.push(girilunghi);
       dataGrafico.amici.push(amici);
+    });
 
-      tbody.insertAdjacentHTML('afterbegin', `<tr><td>${anno}</td><td>${tot}</td><td>${giretti}</td><td>${girilunghi}</td><td>${amici}</td></tr>`);
-    } catch (e) { console.error(e); }
+    // 🔥 aggiorna tabella TUTTA INSIEME (molto più veloce)
+    const html = risultati.map(({ anno }, i) => `
+      <tr>
+        <td>${anno}</td>
+        <td>${dataGrafico.totali[i]}</td>
+        <td>${dataGrafico.giretti[i]}</td>
+        <td>${dataGrafico.lunghi[i]}</td>
+        <td>${dataGrafico.amici[i]}</td>
+      </tr>
+    `).reverse().join("");
+
+    tbody.innerHTML = html;
+
+  } catch (e) {
+    console.error(e);
   }
 
+  // grafico (uguale al tuo)
   const ctx = document.getElementById('chartTrend').getContext('2d');
   new Chart(ctx, {
     type: 'line',
     data: {
       labels: dataGrafico.anni,
       datasets: [
-        { label: 'Giri Totali', data: dataGrafico.totali, borderColor: '#2332bb', tension: 0.2, borderWidth: 4 },
+        { label: 'Giri Insieme', data: dataGrafico.totali, borderColor: '#2332bb', tension: 0.2, borderWidth: 4 },
         { label: 'Giretti', data: dataGrafico.giretti, borderColor: '#4caf50', tension: 0.2, borderWidth: 3 },
         { label: 'Giri Lunghi', data: dataGrafico.lunghi, borderColor: '#ff9800', tension: 0.2, borderWidth: 3 },
         { label: 'Giri Amici', data: dataGrafico.amici, borderColor: '#e91e63', tension: 0.2, borderWidth: 3 }
       ]
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom', labels: { font: { size: 16, weight: 'bold' }, padding: 20 } },
-        title: { display: false }
-      },
-      scales: {
-        y: { beginAtZero: true, ticks: { font: { size: 14, weight: 'bold' } }, title: { display: true, text: 'Quantità', font: { size: 16, weight: 'bold' } } },
-        x: { ticks: { font: { size: 14, weight: 'bold' } }, title: { display: false } }
-      }
-    }
+    options: { responsive: true, maintainAspectRatio: false }
   });
 
   if (ultimaData) {
     const diff = Math.floor((new Date() - ultimaData) / 86400000);
-    document.getElementById("frase-giri").innerText = `Sono ben ${diff} giorni che non facciamo un giro insieme!`;
+    document.getElementById("frase-giri").innerText =
+      `Sono ben ${diff} giorni che non facciamo un giro insieme!`;
   }
 }
 

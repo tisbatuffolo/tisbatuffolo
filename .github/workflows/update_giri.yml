@@ -2,34 +2,40 @@ name: Aggiorna GirettiMap
 
 on:
   schedule:
-    - cron: "0 0 * * *"    
+    - cron: "0 0 * * *"
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update:
     runs-on: ubuntu-latest
 
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4   # 🔥 aggiornato
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Setup Python
+        uses: actions/setup-python@v5   # 🔥 aggiornato
+        with:
+          python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        pip install beautifulsoup4 requests
+      - name: Install dependencies
+        run: |
+          pip install beautifulsoup4 requests
 
-    - name: Run script aggiorna-giri.py
-      run: |
-        python3 girettimap/aggiorna-giri.py
+      - name: Run script aggiorna-giri.py
+        run: |
+          python3 girettimap/aggiorna-giri.py
 
-    - name: Commit JSON aggiornato
-      run: |
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Actions"
-        git add girettimap/giri.js
-        git commit -m "Aggiornamento automatico giri.js" || echo "Nessuna modifica"
-        git push
+      - name: Commit file aggiornato
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add girettimap/giri.js
+          git commit -m "Aggiornamento automatico giri.js" || echo "Nessuna modifica"
+          git push
