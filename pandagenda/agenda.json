@@ -25,14 +25,18 @@
   },
   "2026-04-26": {
     "nome": "Sarajevo",
-    "tipo": ""
+    "tipo": "girolungo"
   },
   "2026-04-27": {
     "nome": "Sarajevo",
-    "tipo": ""
+    "tipo": "girolungo"
   },
   "2026-04-28": {
     "nome": "Sarajevo",
-    "tipo": ""
+    "tipo": "girolungo"
+  },
+  "2026-04-20": {
+    "nome": "teatro",
+    "tipo": "evento"
   }
 }
