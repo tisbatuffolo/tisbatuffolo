@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandosita</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    background-color: #f9fbff;
+    padding-bottom: 50px; /* Spazio in fondo alla pagina */
+  }
+
+  header {
+    background: #e2eaff;
+    padding: 20px 0 10px 0;
+  }
+
+  header h1 {
+    color: #2332bb;
+    font-size: 2em;
+    margin: 0;
+  }
+
+  header h1 a {
+    color: #2332bb;
+    text-decoration: none;
+  }
+
+  header h1 a:hover {
+    color: #547bfc;
+  }
+
+  /* --- STILI COMUNI SEZIONI --- */
+  .section-title {
+    color: #000000; /* Titolo Nero come richiesto */
+    margin-bottom: 5px;
+    font-size: 1.8em;
+    margin-top: 40px;
+  }
+
+  .section-subtitle {
+    color: #667;
+    font-size: 0.9em;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  /* Contenitore principale per lo scroll (comune) */
+  .scroll-wrapper {
+    overflow-x: auto;
+    padding: 20px;
+    -webkit-overflow-scrolling: touch; /* Scroll fluido su mobile */
+  }
+
+  /* Stile scrollbar personalizzato (12px come richiesto) */
+  .scroll-wrapper::-webkit-scrollbar {
+    height: 12px;
+  }
+  .scroll-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  .scroll-wrapper::-webkit-scrollbar-thumb {
+    background: #2332bb;
+    border-radius: 10px;
+  }
+  .scroll-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #1a258c;
+  }
+
+  /* Stile item base (comune) */
+  .media-item {
+    background: #ffffff;
+    border: 1px solid #e2eaff;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    overflow: hidden; /* Taglia i contenuti che escono dai bordi arrotondati */
+  }
+
+  .media-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+
+
+  /* --- SPECIFICO STICKERS (Griglia a 2 righe) --- */
+  .stickers-section {
+    background: #fff;
+    padding: 20px 0;
+  }
+
+  .stickers-grid {
+    display: grid;
+    grid-template-rows: repeat(2, 150px); /* Due righe */
+    grid-auto-flow: column;
+    grid-auto-columns: 150px; 
+    gap: 15px;
+    width: max-content;
+    padding-bottom: 10px;
+  }
+
+  .stickers-grid .sticker-item img {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+  }
+
+
+  /* --- SPECIFICO GIF (Riga singola) --- */
+  .gif-section {
+    padding: 20px 0;
+  }
+
+  .gif-flex {
+    display: flex;
+    flex-direction: row; /* Riga singola */
+    gap: 15px;
+    width: max-content;
+    padding-bottom: 10px;
+  }
+
+  .gif-item {
+    width: 250px; /* Più larghe per i video */
+    height: 180px;
+  }
+
+  .gif-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Copre l'area senza deformarsi, tagliando i bordi se necessario */
+  }
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>
+      <a class="home-link" href="../index.html">SbatuffoBlog</a>
+      <span> - Pandosità</span>
+  </h1>
+</header>
+
+<section class="stickers-section">
+  <h2 class="section-title">Panda Stickers</h2>
+  <p class="section-subtitle">Scorri lateralmente i nostri panda stickers per scoprirli tutti!</p>
+  
+  <div class="scroll-wrapper">
+    <div class="stickers-grid" id="sticker-gallery">
+      </div>
+  </div>
+</section>
+
+<section class="gif-section">
+  <h2 class="section-title">Panda Gif</h2>
+  <p class="section-subtitle">Ti sbatuffolo animatamente!</p>
+  
+  <div class="scroll-wrapper">
+    <div class="gif-flex" id="gif-gallery">
+      </div>
+  </div>
+</section>
+
+<script>
+  // Configurazione
+  const MAX_CHECK = 500; // Limite massimo di tentativi per file sequenziali
+
+  // --- CARICAMENTO DINAMICO STICKERS (.webp img) ---
+  const stickerContainer = document.getElementById('sticker-gallery');
+  const stickerPath = 'img/sticker/';
+
+  for (let i = 1; i <= MAX_CHECK; i++) {
+    const div = document.createElement('div');
+    div.className = 'media-item sticker-item';
+    
+    const img = document.createElement('img');
+    img.src = `${stickerPath}sticker (${i}).webp`;
+    img.alt = `Panda Sticker ${i}`;
+    img.loading = "lazy";
+
+    // Gestione errore: se l'immagine non esiste, rimuovi il div
+    img.onerror = function() {
+      div.remove();
+    };
+
+    div.appendChild(img);
+    stickerContainer.appendChild(div);
+  }
+
+
+  // --- CARICAMENTO DINAMICO GIF (.mp4 video) ---
+  const gifContainer = document.getElementById('gif-gallery');
+  const gifPath = 'img/gif/';
+
+  for (let i = 1; i <= MAX_CHECK; i++) {
+    const div = document.createElement('div');
+    div.className = 'media-item gif-item';
+    
+    // Creazione elemento video
+    const video = document.createElement('video');
+    video.autoplay = true;   // Parte da solo
+    video.loop = true;       // Riparte all'infinito
+    video.muted = true;      // Necessario per l'autoplay nella maggior parte dei browser
+    video.playsinline = true; // Necessario per autoplay su mobile iOS
+    video.setAttribute('webkit-playsinline', 'true'); // Supporto extra iOS vecchio
+
+    // Creazione del source tag per gestire l'errore di caricamento
+    const source = document.createElement('source');
+    source.src = `${gifPath}pandagif (${i}).mp4`;
+    source.type = 'video/mp4';
+
+    // Gestione errore sul source: se il video non esiste, rimuovi il div
+    source.onerror = function() {
+      div.remove();
+    };
+
+    video.appendChild(source);
+    div.appendChild(video);
+    gifContainer.appendChild(div);
+  }
+</script>
+
+</body>
+</html>
