@@ -133,6 +133,37 @@
       border: 0;
       border-top: 2px solid #eee;
     }
+
+    /* Allineamento icone sopra la tabella */
+    .table-icons-container {
+      display: flex;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0;
+      justify-content: center;
+    }
+    
+    .icon-wrapper {
+      flex: 1;
+      text-align: center;
+    }
+
+    .icon-wrapper img {
+      width: 40px; 
+      height: auto;
+    }
+
+    .icon-spacer { flex: 1; }
+
+    /* Nuovo stile per il footer banner */
+    .footer-banner {
+      background-color: #e3f2fd; /* Azzurrino coordinato con il brand */
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 1100px;
+      margin: 0 auto 50px auto;
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -164,6 +195,14 @@
   <section id="contagiri">
     <h2>Conta Giri</h2>
     <p id="frase-giri" style="font-size: 1.2em; font-weight: bold; color: #d32f2f; text-align: center;"></p>
+
+    <div class="table-icons-container">
+      <div class="icon-spacer"></div> 
+      <div class="icon-wrapper"><img src="img/giriinsieme.png" alt=""></div>
+      <div class="icon-wrapper"><img src="img/giretti.png" alt=""></div>
+      <div class="icon-wrapper"><img src="img/girilunghi.png" alt=""></div>
+      <div class="icon-wrapper"><img src="img/giriamici.png" alt=""></div>
+    </div>
 
     <table id="tabella-giri">
       <thead>
@@ -207,7 +246,10 @@
   </section>
 
   <hr class="separator">
-  <h2 style="text-align: center; margin-bottom: 50px;">Solo giri nuovi e tutti giri belli!</h2>
+  
+  <div class="footer-banner">
+    <h2 style="margin: 0;">Solo posti nuovi e tutti giri belli!</h2>
+  </div>
 </main>
 
 <script src="giri.js"></script>
@@ -243,7 +285,6 @@ async function init() {
   const sidebar = document.getElementById("lista-checkbox-anni");
   let ultimaData = null;
 
-  // Aspettiamo che TUTTI i fetch siano completati prima di toccare il DOM
   const fetchPromises = anniOrdinati.map(async (anno) => {
     try {
       const res = await fetch(BASE_CSV + SHEETS[anno]);
@@ -275,7 +316,6 @@ async function init() {
 
   await Promise.all(fetchPromises);
 
-  // ORA che i dati sono tutti in datiPerAnno, popoliamo la sidebar in ordine
   anniOrdinati.forEach(anno => {
     if(datiPerAnno[anno]) {
       const item = document.createElement("div");
@@ -285,7 +325,6 @@ async function init() {
     }
   });
 
-  // Popola tabella (ordine decrescente per la tabella)
   const tbody = document.querySelector("#tabella-giri tbody");
   const summary = { anni: [], totali: [], giretti: [], lunghi: [], amici: [] };
   
@@ -304,7 +343,6 @@ async function init() {
   renderTrend(summary);
   updateTorta(); 
 
-  // Event Listeners
   document.querySelectorAll('.anno-cb').forEach(cb => cb.addEventListener('change', updateTorta));
   document.getElementById('selectAll').addEventListener('change', (e) => {
     document.querySelectorAll('.anno-cb').forEach(cb => cb.checked = e.target.checked);
