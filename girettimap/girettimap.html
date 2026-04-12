@@ -194,7 +194,7 @@
 
   <section id="contagiri">
     <h2>Conta Giri</h2>
-    <p id="frase-giri" style="font-size: 1.2em; font-weight: bold; color: #d32f2f; text-align: center;"></p>
+    <p id="frase-giri" style="font-size: 1.2em; font-weight: bold; text-align: center;"></p>
 
     <div class="table-icons-container">
       <div class="icon-spacer"></div> 
@@ -316,7 +316,8 @@ async function init() {
 
   await Promise.all(fetchPromises);
 
-  anniOrdinati.forEach(anno => {
+  // INVERSIONE ORDINE QUI: aggiunto .slice().reverse() per mostrare dal 2026 al 2018
+  anniOrdinati.slice().reverse().forEach(anno => {
     if(datiPerAnno[anno]) {
       const item = document.createElement("div");
       item.className = "anno-item";
@@ -350,8 +351,27 @@ async function init() {
   });
 
   if (ultimaData) {
-    const diff = Math.floor((new Date() - ultimaData) / 86400000);
-    document.getElementById("frase-giri").innerText = `Sono ben ${diff} giorni che non facciamo un giro insieme!`;
+    const oggi = new Date();
+    oggi.setHours(0, 0, 0, 0);
+    const ultimaDataGiro = new Date(ultimaData);
+    ultimaDataGiro.setHours(0, 0, 0, 0);
+    
+    const diff = Math.floor((oggi - ultimaDataGiro) / 86400000);
+    const fraseElement = document.getElementById("frase-giri");
+    
+    if (diff === 0) {
+      fraseElement.innerText = "che bello oggi abbiamo fatto un giro insieme!";
+      fraseElement.style.color = "green";
+    } else if (diff === 1) {
+      fraseElement.innerText = "che bello ieri abbiamo fatto un giro insieme!";
+      fraseElement.style.color = "green";
+    } else if (diff >= 2 && diff <= 6) {
+      fraseElement.innerText = "che bello questa settimana abbiamo fatto un giro insieme!";
+      fraseElement.style.color = "green";
+    } else {
+      fraseElement.innerText = `Sono ben ${diff} giorni che non facciamo un giro insieme!`;
+      fraseElement.style.color = "#d32f2f"; // Rosso
+    }
   }
 }
 
