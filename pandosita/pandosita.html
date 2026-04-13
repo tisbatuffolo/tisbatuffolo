@@ -66,20 +66,172 @@
   .sticker-item-phone img { width: 100%; height: auto; display: block; }
   .phone-button { width: 44px; height: 44px; background: transparent; border: 3px solid #b1b4b8; border-radius: 50%; margin-top: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
 
-  /* --- PANDA GIF --- */
-  .gif-section { padding: 20px 0; }
-  .gif-flex { display: flex; gap: 15px; width: max-content; }
-  .gif-item { width: 250px; height: 180px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: none; border: none; }
-  .gif-item video { width: 100%; height: 100%; object-fit: cover; }
+  /* --- PANDA GIF (SEZIONE MODIFICATA) --- */
+  .gif-section { 
+    padding: 60px 0; 
+    background: #fdfdfd; 
+    overflow: hidden;
+  }
+  
+  .camera-display-container {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Rullino Fotografico */
+  .film-roll-container {
+    width: 100%;
+    background: #1a1a1a;
+    padding: 20px 0;
+    position: relative;
+    border-top: 4px solid #333;
+    border-bottom: 4px solid #333;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    overflow-x: auto;
+    scrollbar-width: none; /* Nascondiamo quella nativa per usare quella della macchina */
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    display: flex;
+  }
+  .film-roll-container::-webkit-scrollbar { display: none; }
+
+  .film-strip-gifs {
+    display: flex;
+    gap: 10px;
+    padding: 0 50px;
+    align-items: center;
+  }
+
+  .film-frame-gif {
+    flex: 0 0 220px;
+    height: 160px;
+    background: #000;
+    position: relative;
+    border-left: 15px solid #1a1a1a;
+    border-right: 15px solid #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Fori del rullino */
+  .film-frame-gif::before, .film-frame-gif::after {
+    content: "";
+    position: absolute;
+    left: -15px;
+    right: -15px;
+    height: 12px;
+    background-image: radial-gradient(circle, #444 40%, transparent 45%);
+    background-size: 20px 20px;
+  }
+  .film-frame-gif::before { top: -16px; }
+  .film-frame-gif::after { bottom: -16px; }
+
+  .film-frame-gif video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid #333;
+  }
+
+  /* Macchina Fotografica */
+  .camera-body {
+    width: 280px;
+    height: 180px;
+    background: #222;
+    border-radius: 20px;
+    margin-top: -30px; /* Sovrappone leggermente il rullino */
+    position: relative;
+    z-index: 10;
+    border: 5px solid #444;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    background: linear-gradient(145deg, #333, #111);
+  }
+
+  .camera-lens-big {
+    width: 110px;
+    height: 110px;
+    background: #111;
+    border-radius: 50%;
+    margin: 30px auto 0;
+    border: 8px solid #333;
+    box-shadow: inset 0 0 20px #000;
+    position: relative;
+  }
+  
+  .camera-lens-inner {
+    width: 40px;
+    height: 40px;
+    background: #050505;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #222;
+  }
+
+  .camera-flash {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 40px;
+    height: 30px;
+    background: #444;
+    border-radius: 5px;
+    border: 2px solid #555;
+  }
+
+  /* La base con la Scrollbar */
+  .camera-base-scroll {
+    width: 320px;
+    height: 50px;
+    background: #444;
+    border-radius: 0 0 15px 15px;
+    margin-top: -10px;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    z-index: 9;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  .custom-scrollbar-input {
+    width: 100%;
+    cursor: pointer;
+    accent-color: #2332bb;
+  }
+
+  @media (max-width: 480px) {
+    .camera-body { width: 200px; height: 130px; }
+    .camera-lens-big { width: 70px; height: 70px; margin: 25px auto 0; }
+    .camera-base-scroll { width: 240px; }
+    .film-frame-gif { flex: 0 0 160px; height: 120px; }
+  }
 
   /* --- LULU --- */
   .lulu-section { margin-top: 60px; padding: 40px 0; }
   .book-wrapper { position: relative; max-width: 950px; margin: 0 auto; padding: 20px; }
   .book-cover { background: #4e342e; padding: 12px; border-radius: 10px 25px 25px 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.4), 20px 0 0 -10px #3e2723; position: relative; }
   .book-body { display: flex; background: #fff5e6; min-height: 600px; position: relative; overflow: hidden; box-shadow: inset -15px 0 20px -10px rgba(0,0,0,0.1); }
-  .book-spine { position: absolute; left: 50%; top: 0; bottom: 0; width: 50px; transform: translateX(-50%); background: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.2) 100%); z-index: 10; }
-  .book-pages-container { display: flex; width: 100%; overflow-x: hidden; scroll-behavior: smooth; }
-  .book-spread { display: flex; min-width: 100%; height: 100%; }
+  .book-spine { position: absolute; left: 50%; top: 0; bottom: 0; width: 50px; transform: translateX(-50%); background: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.2) 100%); z-index: 10; pointer-events: none; }
+  
+  /* Container aggiornato per gestire lo scrolling orizzontale nativo (swipe su mobile) e lo snap */
+  .book-pages-container { 
+    display: flex; 
+    width: 100%; 
+    overflow-x: auto; 
+    scroll-behavior: smooth; 
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    scroll-snap-type: x mandatory;
+  }
+  .book-pages-container::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
+  
+  .book-spread { display: flex; min-width: 100%; height: 100%; scroll-snap-align: start; }
   .page { width: 50%; padding: 40px; display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; gap: 30px; box-sizing: border-box; position: relative; align-items: center; }
   .page-left { background: linear-gradient(to right, #fdf5e6 95%, #e0d6c5 100%); }
   .page-right { background: linear-gradient(to left, #fdf5e6 95%, #e0d6c5 100%); }
@@ -144,7 +296,13 @@
   .cross::after { content: ""; width: 30px; height: 10px; background: #222; position: absolute; top: 12px; left: -10px; }
   @keyframes zombieSway { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
 
-  @media (max-width: 768px) { .book-body { min-height: 500px; } .page { width: 100%; padding: 20px; flex-shrink: 0; } .book-spread { flex-direction: column; width: 100%; } .book-spine { display: none; } }
+  /* --- MEDIA QUERIES AGGIORNATE --- */
+  @media (max-width: 768px) { 
+    .book-body { min-height: 500px; } 
+    .book-spread { min-width: 200%; flex-direction: row; scroll-snap-align: none; } 
+    .page { width: 50%; padding: 20px; flex-shrink: 0; scroll-snap-align: start; } 
+    .book-spine { display: none; } 
+  }
 </style>
 </head>
 
@@ -175,21 +333,25 @@
 <section class="gif-section">
   <h2 class="section-title">Panda Gif</h2>
   <p>Ti sbatuffolo animatamente</p>
-  <div class="scroll-wrapper"><div class="gif-flex" id="gif-gallery"></div></div>
+  
+  <div class="camera-display-container">
+    <div class="film-roll-container" id="gif-scroll-container">
+      <div class="film-strip-gifs" id="gif-gallery">
+        </div>
+    </div>
+
+    <div class="camera-body">
+      <div class="camera-flash"></div>
+      <div class="camera-lens-big">
+        <div class="camera-lens-inner"></div>
+      </div>
+    </div>
+
+    <div class="camera-base-scroll">
+      <input type="range" class="custom-scrollbar-input" id="camera-scrollbar" min="0" value="0" step="1">
+    </div>
+  </div>
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <section class="lulu-sofa-section">
   <h2 class="section-title">Lulu sdivanata</h2>
@@ -245,10 +407,9 @@
       gap: 25px;
       margin-bottom: 20px;
       perspective: 1000px;
-      position: relative; /* Necessario per posizionare l'ombra centrale */
+      position: relative; 
     }
 
-    /* --- EFFETTO OMBRA/CUCITURA VERTICALE CENTRALE --- */
     .sofa-backrest::after {
       content: "";
       position: absolute;
@@ -256,7 +417,6 @@
       bottom: -10px;
       left: 50%;
       width: 2px;
-      /* Una linea scura sfumata che simula la divisione delle sedute */
       background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.4) 20%, rgba(0,0,0,0.4) 80%, transparent);
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
       transform: translateX(-50%);
@@ -264,12 +424,11 @@
       pointer-events: none;
     }
 
-    /* --- CUSCINI AVORIO --- */
     .cushion-container {
       position: relative;
       filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
       transition: transform 0.3s ease;
-      z-index: 3; /* Sopra la cucitura centrale */
+      z-index: 3; 
     }
 
     .cushion {
@@ -292,7 +451,6 @@
       clip-path: url(#concave-cushion-shape);
     }
 
-    /* Barra Cucitura e Gatto */
     .sofa-seam-scroll-container {
       width: 100%;
       height: 18px;
@@ -326,7 +484,6 @@
       top: -10px;
     }
 
-    /* --- RESPONSIVE --- */
     @media (max-width: 768px) {
       :root { --cushion-w: 200px; --cushion-h: 180px; }
       .sofa-external-wrapper { padding: 20px 60px; }
@@ -338,13 +495,9 @@
       .sofa-external-wrapper { padding: 20px 40px; }
       .armrest { width: 45px; height: 160px; }
       .sofa-main-body { padding: 30px 10px 10px 10px; }
-      
       .sofa-backrest { gap: -30px; } 
-      
-      /* Rotazione per sovrapposizione mobile */
       .cushion-container:first-child { transform: rotate(-8deg) translateX(8px); z-index: 3; }
       .cushion-container:last-child { transform: rotate(8deg) translateX(-8px); z-index: 4; }
-      
       #sofa-cat-thumb { width: 90px; top: -38px; }
     }
   </style>
@@ -451,23 +604,6 @@
   </script>
 </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <section class="lulu-section">
   <h2 class="section-title">Lulu meno male che ci sei tu</h2>
   <p>Dove starà dormendo adesso la Lulu?</p>
@@ -519,14 +655,34 @@
     }
   }
 
+  /* NUOVA LOGICA CARICAMENTO E SCROLL GIF */
   function loadGifs() {
     const container = document.getElementById('gif-gallery');
+    const scrollContainer = document.getElementById('gif-scroll-container');
+    const scrollbar = document.getElementById('camera-scrollbar');
+
     for (let i = 1; i <= 50; i++) {
       const div = document.createElement('div');
-      div.className = 'gif-item';
-      div.innerHTML = `<video autoplay loop muted playsinline onerror="this.remove()"><source src="img/gif/pandagif (${i}).mp4" type="video/mp4"></video>`;
+      div.className = 'film-frame-gif';
+      div.innerHTML = `<video autoplay loop muted playsinline onerror="this.parentNode.remove()"><source src="img/gif/pandagif (${i}).mp4" type="video/mp4"></video>`;
       container.appendChild(div);
     }
+
+    // Configura la scrollbar dopo un breve ritardo per attendere il rendering
+    setTimeout(() => {
+      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      scrollbar.max = maxScroll;
+
+      // Movimento Slider -> Scroll Rullino
+      scrollbar.addEventListener('input', () => {
+        scrollContainer.scrollLeft = scrollbar.value;
+      });
+
+      // Movimento Rullino (Swipe) -> Update Slider
+      scrollContainer.addEventListener('scroll', () => {
+        scrollbar.value = scrollContainer.scrollLeft;
+      });
+    }, 1000);
   }
 
   const bookEngine = document.getElementById('lulu-book-engine');
@@ -536,15 +692,12 @@
     let images = [];
     for (let i = 1; i <= 40; i++) images.push(`img/lulu/lulu (${i}).jpg`);
     
-    // Pagina titolo (fissa)
     const firstSpread = document.createElement('div');
     firstSpread.className = 'book-spread';
     firstSpread.innerHTML = `<div class="page page-left"><div class="book-title-page"><h3>Fra un pisolo e un altro</h3></div><span class="page-number">pag. 1</span></div><div class="page page-right" id="p2"></div>`;
     bookEngine.appendChild(firstSpread);
     
-    // Riempi p2 e rimuovi spread se vuota
     const p2Count = await fillPage(document.getElementById('p2'), images.slice(0, 2), 2);
-    // Se la pagina 2 è vuota, in questo caso specifico lasciamo il titolo ma potresti decidere diversamente.
     
     for (let i = 2, p = 3; i < images.length; i += 4) {
       const spread = document.createElement('div');
@@ -556,18 +709,15 @@
       const countL = await fillPage(document.getElementById(idL), images.slice(i, i + 2), p++);
       const countR = await fillPage(document.getElementById(idR), images.slice(i + 2, i + 4), p++);
       
-      // Se entrambe le pagine della facciata sono diventate vuote, rimuovi l'intera facciata
       if (countL === 0 && countR === 0) {
           spread.remove();
       } else {
-          // Rimuovi solo la singola pagina se vuota (opzionale, per layout pulito)
           if (countL === 0) document.getElementById(idL).style.visibility = 'hidden';
           if (countR === 0) document.getElementById(idR).style.visibility = 'hidden';
       }
     }
   }
 
-  // Modificata per restituire il numero di immagini caricate con successo
   async function fillPage(div, imgs, num) {
     div.innerHTML += `<span class="page-number">pag. ${num}</span>`;
     let loadedCount = 0;
