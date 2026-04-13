@@ -56,8 +56,6 @@
   .camera-lens { width: 10px; height: 10px; background: #1a1a1a; border-radius: 50%; border: 2px solid #222; box-shadow: inset 0 0 3px #444; }
   .speaker-grill { width: 50px; height: 6px; background: #222; border-radius: 10px; }
   .phone-screen { width: 100%; height: 465px; background: #e0f7fa; border-radius: 38px; overflow: hidden; display: flex; flex-direction: column; position: relative; border: 3px solid #1a1a1a; margin-top: 10px; }
-  
-  /* Riflesso originale */
   .phone-screen::before { content: ""; position: absolute; top: 10px; right: 15px; width: 60px; height: 120px; background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 60%); transform: rotate(-10deg); border-radius: 15px; z-index: 10; pointer-events: none; }
   
   .stickers-display { flex-grow: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 15px; overflow-y: auto; gap: 30px; background-image: radial-gradient(rgba(255,255,255,0.4) 2px, transparent 2px); background-size: 30px 30px; }
@@ -90,7 +88,6 @@
   .page-number { position: absolute; bottom: 15px; font-style: italic; font-size: 0.8em; color: #8d6e63; }
   .page-left .page-number { left: 10px; }
   .page-right .page-number { right: 10px; }
-  
   .photo-frame { position: relative; padding: 10px 10px 35px 10px; box-shadow: 2px 4px 8px rgba(0,0,0,0.15); transform: rotate(var(--rotation)); transition: all 0.3s ease; height: 220px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.05); box-sizing: border-box; }
   .photo-frame.tape-tl::before { content: ""; position: absolute; width: 60px; height: 20px; top: -10px; left: -15px; transform: rotate(-35deg); background-color: rgba(220, 220, 180, 0.4); box-shadow: 0 1px 3px rgba(0,0,0,0.1); z-index: 2; }
   .photo-frame.tape-tr::after { content: ""; position: absolute; width: 60px; height: 20px; top: -10px; right: -15px; transform: rotate(35deg); background-color: rgba(220, 220, 180, 0.4); box-shadow: 0 1px 3px rgba(0,0,0,0.1); z-index: 2; }
@@ -99,7 +96,6 @@
   .decor-pin { top: -10px; right: 10px; transform: rotate(15deg); color: #d32f2f; }
   .photo-frame.cut-corners img { clip-path: polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px); }
   .photo-frame img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
-
   .book-btn { position: absolute; top: 50%; transform: translateY(-50%); background: #3e2723; color: #fff; border: 2px solid #fff5e6; width: 55px; height: 55px; border-radius: 50%; cursor: pointer; font-size: 1.4em; z-index: 100; transition: opacity 0.3s; }
   .book-btn.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
   .btn-l { left: -30px; }
@@ -115,7 +111,6 @@
     position: relative; width: 95%; max-width: 1000px; margin: 40px auto 0; background: #000; border: 8px solid #1a1a1a; 
     box-shadow: 0 0 80px rgba(255,0,0,0.5); 
   }
-  
   .cinema-container::after { 
     content: ""; position: absolute; top: -30px; left: -30px; right: -30px; bottom: 0; 
     background: radial-gradient(ellipse at top, rgba(255,0,0,0.2) 0%, transparent 70%); 
@@ -131,13 +126,14 @@
   .spider-hanging::after { content: "🕷️"; position: absolute; bottom: -15px; left: -10px; font-size: 20px; }
   @keyframes spiderMove { 0%, 100% { height: 20px; } 50% { height: 180px; } }
   
-  .cinema-screen { position: relative; background: #000; height: 450px; overflow: hidden; display: flex; align-items: center; }
-  .film-strip { display: flex; gap: 0; will-change: transform; }
+  .cinema-screen { position: relative; background: #000; height: 450px; overflow: hidden; display: flex; align-items: center; cursor: grab; }
+  .cinema-screen:active { cursor: grabbing; }
+  .film-strip { display: flex; gap: 0; will-change: transform; user-select: none; }
   .film-frame { flex: 0 0 350px; height: 280px; margin: 0 10px; position: relative; display: flex; align-items: center; justify-content: center; background: #111; border-top: 25px solid #222; border-bottom: 25px solid #222; }
   .film-frame::before, .film-frame::after { content: ""; position: absolute; left: 0; width: 100%; height: 15px; background-image: radial-gradient(circle, #000 50%, transparent 50%); background-size: 30px 30px; background-repeat: repeat-x; }
   .film-frame::before { top: -20px; }
   .film-frame::after { bottom: -20px; }
-  .film-frame img { max-width: 90%; max-height: 90%; object-fit: contain; filter: sepia(0.3) contrast(1.1); border: 1px solid #333; }
+  .film-frame img { max-width: 90%; max-height: 90%; object-fit: contain; filter: sepia(0.3) contrast(1.1); border: 1px solid #333; pointer-events: none; }
   
   .zombie-fallback { position: absolute; bottom: -10px; width: 100%; display: flex; justify-content: space-around; align-items: flex-end; pointer-events: none; z-index: 20; padding: 0 20px; box-sizing: border-box; }
   .zombie-container { display: flex; flex-direction: column; align-items: center; position: relative; }
@@ -164,11 +160,9 @@
     <div class="floating-heart" style="top: 10%; left: -110px;">❤️</div>
     <div class="floating-heart" style="top: 50%; left: -130px; animation-delay: 1s;">💖</div>
     <div class="pulsing-star" style="top: 30%; left: -80px;">⭐</div>
-    
     <div class="floating-heart" style="top: 20%; right: -110px; animation-delay: 0.5s;">❤️</div>
     <div class="floating-heart" style="bottom: 20%; right: -130px; animation-delay: 1.5s;">💕</div>
     <div class="pulsing-star" style="top: 40%; right: -85px; animation-delay: 0.8s;">✨</div>
-
     <div class="phone-container">
       <div class="phone-top-sensors"><div class="speaker-grill"></div><div class="camera-lens"></div></div>
       <div class="phone-screen"><div class="stickers-display" id="sticker-phone-gallery"></div></div>
@@ -204,7 +198,7 @@
     <div class="cinema-container">
         <div class="web-corner"></div>
         <div class="spider-hanging"></div>
-        <div class="cinema-screen"><div class="film-strip" id="sfigatini-engine"></div></div>
+        <div class="cinema-screen" id="cinema-interact"><div class="film-strip" id="sfigatini-engine"></div></div>
         <div class="zombie-fallback">
           <div class="zombie-container"><div class="zombie-head"></div></div>
           <div class="zombie-container" style="transform:translateY(-10px)"><div class="cross"></div></div>
@@ -248,55 +242,81 @@
     let images = [];
     for (let i = 1; i <= 40; i++) images.push(`img/lulu/lulu (${i}).jpg`);
     
+    // Pagina titolo (fissa)
     const firstSpread = document.createElement('div');
     firstSpread.className = 'book-spread';
     firstSpread.innerHTML = `<div class="page page-left"><div class="book-title-page"><h3>Fra un pisolo e un altro</h3></div><span class="page-number">pag. 1</span></div><div class="page page-right" id="p2"></div>`;
     bookEngine.appendChild(firstSpread);
-    fillPage(document.getElementById('p2'), images.slice(0, 2), 2);
-
+    
+    // Riempi p2 e rimuovi spread se vuota
+    const p2Count = await fillPage(document.getElementById('p2'), images.slice(0, 2), 2);
+    // Se la pagina 2 è vuota, in questo caso specifico lasciamo il titolo ma potresti decidere diversamente.
+    
     for (let i = 2, p = 3; i < images.length; i += 4) {
       const spread = document.createElement('div');
       spread.className = 'book-spread';
-      spread.innerHTML = `<div class="page page-left" id="pl${p}"></div><div class="page page-right" id="pr${p+1}"></div>`;
+      const idL = `pl${p}`; const idR = `pr${p+1}`;
+      spread.innerHTML = `<div class="page page-left" id="${idL}"></div><div class="page page-right" id="${idR}"></div>`;
+      
       bookEngine.appendChild(spread);
-      fillPage(document.getElementById(`pl${p}`), images.slice(i, i + 2), p++);
-      fillPage(document.getElementById(`pr${p}`), images.slice(i + 2, i + 4), p++);
+      const countL = await fillPage(document.getElementById(idL), images.slice(i, i + 2), p++);
+      const countR = await fillPage(document.getElementById(idR), images.slice(i + 2, i + 4), p++);
+      
+      // Se entrambe le pagine della facciata sono diventate vuote, rimuovi l'intera facciata
+      if (countL === 0 && countR === 0) {
+          spread.remove();
+      } else {
+          // Rimuovi solo la singola pagina se vuota (opzionale, per layout pulito)
+          if (countL === 0) document.getElementById(idL).style.visibility = 'hidden';
+          if (countR === 0) document.getElementById(idR).style.visibility = 'hidden';
+      }
     }
   }
 
-  function fillPage(div, imgs, num) {
+  // Modificata per restituire il numero di immagini caricate con successo
+  async function fillPage(div, imgs, num) {
     div.innerHTML += `<span class="page-number">pag. ${num}</span>`;
-    imgs.forEach(src => {
-      const frame = document.createElement('div');
-      frame.className = 'photo-frame';
-      frame.style.setProperty('--rotation', `${Math.random()*6-3}deg`);
-      frame.style.backgroundColor = pastelColors[Math.floor(Math.random()*pastelColors.length)];
-      
-      const img = document.createElement('img');
-      img.src = src;
-      // RIMUOVI POLAROID SE IMMAGINE MANCANTE
-      img.onerror = () => frame.remove();
-      
-      const rand = Math.random();
-      if(rand > 0.7) frame.classList.add('tape-tl');
-      if(rand < 0.3) frame.classList.add('tape-tr');
-      if(Math.random() > 0.6) {
-          const clip = document.createElement('span'); clip.className = 'photo-frame-decor decor-clip'; clip.innerText = '📎'; frame.appendChild(clip);
-      }
-      if(Math.random() > 0.6) {
-          const pin = document.createElement('span'); pin.className = 'photo-frame-decor decor-pin'; pin.innerText = '📌'; frame.appendChild(pin);
-      }
-      if(Math.random() > 0.8) frame.classList.add('cut-corners');
-
-      frame.appendChild(img);
-      div.appendChild(frame);
+    let loadedCount = 0;
+    
+    const promises = imgs.map(src => {
+      return new Promise((resolve) => {
+        const frame = document.createElement('div');
+        frame.className = 'photo-frame';
+        frame.style.setProperty('--rotation', `${Math.random()*6-3}deg`);
+        frame.style.backgroundColor = pastelColors[Math.floor(Math.random()*pastelColors.length)];
+        
+        const img = document.createElement('img');
+        img.src = src;
+        
+        img.onload = () => {
+          loadedCount++;
+          const rand = Math.random();
+          if(rand > 0.7) frame.classList.add('tape-tl');
+          if(rand < 0.3) frame.classList.add('tape-tr');
+          if(Math.random() > 0.6) { const clip = document.createElement('span'); clip.className = 'photo-frame-decor decor-clip'; clip.innerText = '📎'; frame.appendChild(clip); }
+          if(Math.random() > 0.6) { const pin = document.createElement('span'); pin.className = 'photo-frame-decor decor-pin'; pin.innerText = '📌'; frame.appendChild(pin); }
+          if(Math.random() > 0.8) frame.classList.add('cut-corners');
+          frame.appendChild(img);
+          div.appendChild(frame);
+          resolve(true);
+        };
+        
+        img.onerror = () => {
+          frame.remove();
+          resolve(false);
+        };
+      });
     });
+
+    await Promise.all(promises);
+    return loadedCount;
   }
 
   function changePage(dir) { bookEngine.scrollBy({ left: dir * bookEngine.offsetWidth, behavior: 'smooth' }); }
 
   async function buildSfigatini() {
     const engine = document.getElementById('sfigatini-engine');
+    const screen = document.getElementById('cinema-interact');
     for (let i = 1; i <= 53; i++) {
         const frame = document.createElement('div');
         frame.className = 'film-frame';
@@ -304,8 +324,16 @@
         engine.appendChild(frame);
     }
     engine.innerHTML += engine.innerHTML;
-    let currentX = 0;
-    function animate() { currentX -= 1; if (Math.abs(currentX) >= engine.scrollWidth / 2) currentX = 0; engine.style.transform = `translateX(${currentX}px)`; requestAnimationFrame(animate); }
+    let currentX = 0; let baseSpeed = 1; let currentSpeed = 1; let targetSpeed = 1;
+    screen.addEventListener('mousedown', () => { targetSpeed = 15; });
+    window.addEventListener('mouseup', () => { targetSpeed = baseSpeed; });
+    function animate() {
+      currentSpeed += (targetSpeed - currentSpeed) * 0.05;
+      currentX -= currentSpeed;
+      if (Math.abs(currentX) >= engine.scrollWidth / 2) currentX = 0;
+      engine.style.transform = `translateX(${currentX}px)`;
+      requestAnimationFrame(animate);
+    }
     animate();
   }
 
