@@ -2,442 +2,198 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Pandagenda</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PandAgenda – Fixed Rounding</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
-body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-
-header {
-  background: #e2eaff;
-  padding: 20px 0 10px 0;
-  text-align: center;
+:root {
+  --primary: #2332bb;
+  --accent: #ff4757;
+  --bg: #f4f7fa;
+  --text: #1a1a1a;
+  --stroke: #1a1a1a;
+  --c-cibo: #ffd32a; --c-giretto: #ffa801; --c-girolungo: #05c46b;
+  --c-evento: #575fcf; --c-compleanno: #ef5777; --c-festa: #f53b57;
 }
 
-header h1 { color: #2332bb; font-size: 2em; margin: 0; }
+body { font-family: 'Fredoka', sans-serif; margin: 0; background: var(--bg); color: var(--text); }
 
-header h1 a {
-  color: #2332bb;
-  text-decoration: none;
+header { background: #fff; padding: 15px; text-align: center; border-bottom: 3px solid var(--stroke); }
+header h1 { margin: 0; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.6rem; color: var(--primary); }
+
+.container { width: 100%; max-width: 600px; margin: 0 auto; padding: 15px; box-sizing: border-box; }
+
+.nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+.nav-btn {
+  background: var(--primary); color: white; border: 2.5px solid var(--stroke);
+  width: 38px; height: 38px; border-radius: 10px; font-size: 1.2rem; cursor: pointer;
+  box-shadow: 3px 3px 0 var(--stroke);
 }
+#month-year { font-weight: 800; font-size: 1.3rem; text-transform: uppercase; }
 
-header h1 a:hover { color: #547bfc; }
-
-.calendar-container {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 0 15px;
-}
-
-/* Navigazione Mese */
-.month-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
+/* Calendario */
+.cal-wrapper {
+  background: white; border-radius: 18px; padding: 8px;
+  border: 3px solid var(--stroke); box-shadow: 5px 5px 0 rgba(0,0,0,0.05);
   margin-bottom: 20px;
 }
+table { width: 100%; border-collapse: separate; border-spacing: 3px; table-layout: fixed; }
+th { color: #888; font-size: 0.7rem; padding-bottom: 5px; text-transform: uppercase; }
+td { height: 75px; vertical-align: top; border-radius: 8px; border: 2px solid #f0f0f0; transition: 0.2s; cursor: pointer; }
 
-/* Quadratini blu per le frecce */
-.nav-btn {
-  background-color: #2332bb; /* Blu scuro */
-  color: white; /* Freccia bianca */
-  border: none;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px; /* Leggermente arrotondati */
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1.2em;
-  transition: background-color 0.2s;
-  padding: 0;
-  line-height: 1;
+.day-box { display: flex; flex-direction: column; height: 100%; padding: 4px; box-sizing: border-box; }
+.day-num { font-size: 1rem; font-weight: 800; }
+.day-label { 
+    font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 4px;
+    margin-top: auto; text-align: center; color: white;
+    border: 1.5px solid var(--stroke); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-.nav-btn:hover {
-  background-color: #547bfc; /* Blu hover */
-}
+/* Colori celle */
+.bg-cibo { background-color: rgba(255, 211, 42, 0.15); }
+.bg-giretto { background-color: rgba(255, 168, 1, 0.15); }
+.bg-girolungo { background-color: rgba(5, 196, 107, 0.15); }
+.bg-evento { background-color: rgba(87, 95, 207, 0.15); }
+.bg-compleanno { background-color: rgba(239, 87, 119, 0.15); }
+.bg-festa { background-color: rgba(245, 59, 87, 0.15); }
 
-#month-year {
-  font-size: 1.3em;
-  font-weight: bold;
-  color: #333;
-  text-transform: capitalize; /* Iniziale maiuscola per il mese */
-}
+.lbl-cibo { background: var(--c-cibo); color: #000; }
+.lbl-giretto { background: var(--c-giretto); }
+.lbl-girolungo { background: var(--c-girolungo); }
+.lbl-evento { background: var(--c-evento); }
+.lbl-compleanno { background: var(--c-compleanno); }
+.lbl-festa { background: var(--c-festa); }
 
-/* Tabella Calendario */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
+.active-day { border: 3px solid var(--primary) !important; background: #fff !important; }
 
-th {
-  border: 1px solid #ccc;
-  background: #2366c6;
-  color: white;
-  padding: 8px;
-  font-size: 0.9em;
-  text-transform: uppercase;
-}
-
-td {
-  border: 1px solid #ccc;
-  vertical-align: top;
-  padding: 5px;
-  text-align: left; /* Allineamento a sinistra per numero e testo */
-  height: 80px; /* Altezza fissa celle */
-}
-
-.day-cell-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.day-number {
-  font-weight: bold;
-  color: #2366c6;
-  font-size: 0.9em;
-  margin-bottom: 2px;
-}
-
-/* MODIFICA: Font eventi nel calendario uniforme a lista */
-textarea {
-  width: 100%;
-  flex-grow: 1; /* Occupa lo spazio restante */
-  resize: none;
-  border: none;
-  background: transparent;
-  outline: none;
-  cursor: pointer;
-  padding: 0;
-  /* Stessi stili della lista */
-  font-family: Arial, sans-serif;
-  font-size: 13px; /* Dimensione simile a <ul> <li> */
-  color: #333;
-  line-height: 1.3;
-  overflow: hidden; /* Nasconde scrollbar */
-}
-
-/* Bottone Salva principale */
+/* Salva PandAgenda */
 #save-github {
-  background-color: #d32f2f; /* Rosso */
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: bold;
-  margin-top: 25px;
-  transition: background-color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background: var(--accent); color: white; border: 3px solid var(--stroke); padding: 10px 25px;
+  border-radius: 12px; font-weight: 800; display: block; margin: 0 auto 25px auto;
+  box-shadow: 4px 4px 0 var(--stroke); cursor: pointer; font-size: 1.05rem;
 }
 
-#save-github:hover {
-  background-color: #b71c1c;
+.section-title { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem; margin-bottom: 15px; border-left: 5px solid var(--primary); padding-left: 10px; }
+
+/* FIX: Card con stondature ripristinate */
+.activity-card {
+  background: #fff; border: 2.5px solid var(--stroke); 
+  border-radius: 18px; /* Stondatura card principale */
+  margin-bottom: 15px; position: relative; transition: 0.2s;
+  display: flex; align-items: center; 
+  min-height: 95px; height: auto;
+}
+.activity-card.selected { border-color: var(--primary); box-shadow: 4px 4px 0 rgba(35, 50, 187, 0.1); }
+
+.day-square { 
+  width: 65px; align-self: stretch; 
+  border-right: 2.5px solid var(--stroke);
+  /* FIX: Stondature interne che seguono la card */
+  border-top-left-radius: 15px; 
+  border-bottom-left-radius: 15px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #fff; flex-shrink: 0;
+  overflow: hidden; 
+}
+.day-square b { font-size: 1.4rem; line-height: 1; }
+.day-square span { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; margin-top: 2px; }
+
+.activity-img { 
+  height: 90px;
+  width: 130px; 
+  object-fit: contain;
+  padding: 5px;
+  flex-shrink: 0;
 }
 
-#save-github svg {
-    fill: white;
-    width: 18px;
-    height: 18px;
+.activity-info { 
+    flex-grow: 1; 
+    padding: 10px 40px 10px 8px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
 }
+.activity-info b { font-size: 1.1rem; color: var(--text); line-height: 1.2; word-break: break-word; }
+.activity-info span { font-size: 0.8rem; color: #888; font-weight: 600; margin-top: 3px; text-transform: lowercase; }
 
-/* Sezione inferiore */
-.bottom-section {
-  display: flex;
-  gap: 30px;
-  margin-top: 30px;
-  align-items: flex-start;
-}
-
-.activities, .detail {
-  flex: 1;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #eee;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.activities h3, .detail h3 {
-  margin-top: 0;
-  color: #2332bb;
-  border-bottom: 2px solid #e2eaff;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-}
-
-/* Lista attività */
-#activities-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-#activities-list li {
-  cursor: pointer;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.2s, color 0.2s;
-  border-radius: 4px;
-  font-size: 14px;
-  color: #555;
-  display: flex;
-  justify-content: space-between;
-}
-
-#activities-list li:last-child {
-    border-bottom: none;
-}
-
-#activities-list li:hover {
-    background-color: #f4f7ff;
-}
-
-/* MODIFICA: Highlight evento selezionato nella lista */
-#activities-list li.selected {
-    background-color: #e2eaff; /* Blu chiarissimo */
-    color: #2332bb; /* Testo blu scuro */
-    font-weight: bold;
-}
-
-/* Dettaglio evento */
-#detail-empty {
-  text-align: center;
-  padding: 40px 0;
-  color: #888;
-  font-style: italic;
-}
-
-#detail-content {
-  display: none;
-}
-
-.riga-allineata {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.riga-allineata b {
-  min-width: 60px;
-  color: #333;
-}
-
-.riga-allineata span {
-    color: #555;
-}
-
-#detail-type {
-    flex: 1;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* Immagine dettaglio piccola e vicina */
-#detail-image {
-  max-width: 240px; /* Dimensione fissa piccola */
-  margin-top: 10px;
-  display: none;
-  border-radius: 4px;
+.edit-pencil {
+    position: absolute; top: -10px; right: -5px;
+    background: var(--stroke); color: #ffd32a; 
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.15rem; cursor: pointer; border: 2px solid white;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+    z-index: 20;
 }
 
 /* Modale */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(2px);
+.overlay {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 1000;
 }
-
-.modal-content {
-  background: white;
-  padding: 25px;
-  max-width: 400px;
-  margin: 10% auto;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+.sheet {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 85%; max-width: 380px; background: white; border-radius: 20px; overflow: hidden; border: 3px solid var(--stroke);
 }
-
-.modal-content h3 {
-    margin-top: 0;
-    color: #2332bb;
-    margin-bottom: 20px;
-}
-
-.modal input[type="text"], .modal select {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.modal input[type="text"]:disabled {
-    background-color: #f5f5f5;
-    color: #888;
-}
-
-#event-image {
-    width: 100%;
-    max-height: 150px;
-    object-fit: contain;
-    margin-top: 10px;
-    display: none;
-}
-
-.modal-buttons {
-    text-align: right;
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.modal-buttons button {
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-weight: bold;
-}
-
-#save-event {
-    background-color: #2366c6;
-    color: white;
-    border: none;
-}
-#save-event:hover { background-color: #1a4da1; }
-
-#close-modal {
-    background-color: #eee;
-    color: #333;
-    border: 1px solid #ccc;
-}
-#close-modal:hover { background-color: #e0e0e0; }
+.modal-img-container { width: 100%; height: 180px; background: #f9f9f9; border-bottom: 2.5px solid var(--stroke); display: flex; align-items: center; justify-content: center;}
+#modal-img { max-height: 90%; max-width: 90%; object-fit: contain; }
+.modal-content { padding: 15px; }
+.form-group label { display: block; font-weight: 700; margin-bottom: 4px; font-size: 0.8rem; text-transform: uppercase; }
+.form-group input, .form-group select { width: 100%; padding: 10px; border: 2px solid #eee; border-radius: 10px; margin-bottom: 10px; font-family: inherit; }
+.modal-btns { display: flex; gap: 8px; }
+.modal-btns button { flex: 1; padding: 12px; border-radius: 10px; font-weight: 800; border: 2.5 solid var(--stroke); cursor: pointer; }
+#btn-confirm { background: var(--primary); color: white; }
 </style>
 </head>
 
 <body>
-
-<header>
-  <h1><a href="../index.html">SbatuffoBlog</a> – PandAgenda</h1>
-</header>
-
-<main class="calendar-container">
-
-  <div class="month-nav">
-    <button id="prev-month" class="nav-btn">&lt;</button>
+<header><h1>PandAgenda</h1></header>
+<main class="container">
+  <div class="nav-bar">
+    <button id="prev-m" class="nav-btn">‹</button>
     <span id="month-year"></span>
-    <button id="next-month" class="nav-btn">&gt;</button>
+    <button id="next-m" class="nav-btn">›</button>
+  </div>
+  
+  <div class="cal-wrapper">
+    <table>
+      <thead><tr><th>Lun</th><th>Mar</th><th>Mer</th><th>Gio</th><th>Ven</th><th>Sab</th><th>Dom</th></tr></thead>
+      <tbody id="cal-body"></tbody>
+    </table>
   </div>
 
-  <div id="loading" style="text-align:center; color:#666; padding: 20px;">Caricamento agenda…</div>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Lun</th><th>Mar</th><th>Mer</th>
-        <th>Gio</th><th>Ven</th><th>Sab</th><th>Dom</th>
-      </tr>
-    </thead>
-    <tbody id="calendar-body"></tbody>
-  </table>
-
-  <button id="save-github">
-      <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-          <path d="M96 0c17.7 0 32 14.3 32 32V64H320V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h16c26.5 0 48 21.5 48 48V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48H64V32C64 14.3 78.3 0 96 0zm304 464V128H48V464H400zM112 192c0-8.8 7.2-16 16-16H320c8.8 0 16 7.2 16 16s-7.2 16-16 16H128c-8.8 0-16-7.2-16-16zm0 96c0-8.8 7.2-16 16-16H320c8.8 0 16 7.2 16 16s-7.2 16-16 16H128c-8.8 0-16-7.2-16-16zm0 96c0-8.8 7.2-16 16-16H320c8.8 0 16 7.2 16 16s-7.2 16-16 16H128c-8.8 0-16-7.2-16-16z"/>
-      </svg>
-      Salva la PandAgenda
-  </button>
-
-  <div class="bottom-section">
-
-    <div class="activities">
-      <h3>Attività del mese</h3>
-      <ul id="activities-list"></ul>
-    </div>
-
-    <div class="detail">
-      <h3>Dettaglio Evento</h3>
-      <div id="detail-empty">Seleziona un evento da Attività del Mese</div>
-      <div id="detail-content">
-        <div class="riga-allineata">
-          <b>Nome:</b> <span id="detail-name"></span>
-        </div>
-        <div class="riga-allineata">
-          <b>Data:</b> <span id="detail-date"></span>
-        </div>
-        <div class="riga-allineata">
-          <b>Tipo:</b>
-          <select id="detail-type">
-            <option value="">-- seleziona --</option>
-            <option value="cibo">Cibo</option>
-            <option value="giretto">Giretto</option>
-            <option value="girolungo">Giro lungo</option>
-            <option value="evento">Evento</option>
-            <option value="compleanno">Compleanno</option>
-            <option value="festa">Festa</option>
-          </select>
-        </div>
-        <div style="text-align: center;">
-            <img id="detail-image">
-        </div>
-      </div>
-    </div>
-
-  </div>
-
+  <button id="save-github">Salva la PandAgenda 🚀</button>
+  
+  <div class="section-title">Prossime Attività del Mese 🐼</div>
+  <div id="act-list"></div>
 </main>
 
-<div id="event-modal" class="modal">
-  <div class="modal-content">
-    <h3>Dettaglio evento</h3>
-
-    <div class="riga-allineata">
-      <b>Nome:</b>
-      <input id="event-name" type="text" placeholder="Nome evento">
+<div id="modal-overlay" class="overlay">
+  <div class="sheet">
+    <div class="modal-img-container"><img id="modal-img" src="img/nessuna.png"></div>
+    <div class="modal-content">
+        <div class="form-group">
+            <label>Categoria</label>
+            <select id="in-type">
+                <option value="">Nessuna</option>
+                <option value="cibo">Cibo 🍕</option>
+                <option value="giretto">Giretto 🚶‍♂️</option>
+                <option value="girolungo">Giro lungo 🚵‍♀️</option>
+                <option value="evento">Evento ✨</option>
+                <option value="compleanno">Compleanno 🎂</option>
+                <option value="festa">Festa 🥳</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Nome Evento</label>
+            <input id="in-name" type="text" placeholder="Scrivi qui...">
+        </div>
+        <div class="modal-btns">
+          <button id="btn-cancel">CHIUDI</button>
+          <button id="btn-confirm">CONFERMA</button>
+        </div>
     </div>
-
-    <div class="riga-allineata">
-      <b>Data:</b>
-      <input id="event-date" type="text" disabled>
-    </div>
-
-    <div class="riga-allineata">
-      <b>Tipo:</b>
-      <select id="event-type">
-        <option value="">-- seleziona --</option>
-        <option value="cibo">Cibo</option>
-        <option value="giretto">Giretto</option>
-        <option value="girolungo">Giro lungo</option>
-        <option value="evento">Evento</option>
-        <option value="compleanno">Compleanno</option>
-        <option value="festa">Festa</option>
-      </select>
-    </div>
-
-    <img id="event-image">
-
-    <div class="modal-buttons">
-      <button id="close-modal">Chiudi</button>
-      <button id="save-event">Salva</button>
-    </div>
-
   </div>
 </div>
 
@@ -445,234 +201,126 @@ textarea {
 const today = new Date();
 let year = today.getFullYear();
 let month = today.getMonth();
-
 let events = {};
 let selectedKey = null;
 
-// Gestione highlight lista
-function clearListSelection() {
-    const items = document.querySelectorAll('#activities-list li');
-    items.forEach(item => item.classList.remove('selected'));
-}
+const imgMap = {
+    "": "img/nessuna.png", cibo: "img/cibo.png", giretto: "img/giretto.png", 
+    girolungo: "img/girolungo.png", evento: "img/evento.png", compleanno: "img/compleanno.png", festa: "img/festa.png"
+};
 
-async function loadAgenda() {
+const colorMap = {
+    cibo: "var(--c-cibo)", giretto: "var(--c-giretto)", girolungo: "var(--c-girolungo)",
+    evento: "var(--c-evento)", compleanno: "var(--c-compleanno)", festa: "var(--c-festa)"
+};
+
+const mesiNomi = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+
+async function init() {
   try {
     const res = await fetch("agenda.json",{cache:"no-store"});
-    if (!res.ok) throw new Error("File non trovato");
-    const data = await res.json();
-    events = {};
-    for (const k in data) {
-      if (typeof data[k] === "string") {
-        events[k] = { nome:data[k], tipo:"" };
-      } else {
-        events[k] = { nome:data[k].nome || "", tipo:data[k].tipo || "" };
-      }
-    }
-  } catch(e) { console.warn("Agenda non caricata o vuota."); events = {}; }
+    events = await res.json() || {};
+  } catch(e) { events = {}; }
+  render();
 }
 
-function generateCalendar(y,m){
-  const body=document.getElementById("calendar-body");
-  body.innerHTML="";
+function render() {
+  const body = document.getElementById("cal-body");
+  body.innerHTML = "";
+  const first = (new Date(year, month, 1).getDay() + 6) % 7;
+  const last = new Date(year, month + 1, 0).getDate();
+  document.getElementById("month-year").textContent = `${mesiNomi[month]} ${year}`;
 
-  const first=(new Date(y,m,1).getDay()+6)%7;
-  const days=new Date(y,m+1,0).getDate();
-
-  const nomiMesi = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
-  document.getElementById("month-year").textContent = `${nomiMesi[m]} ${y}`;
-
-  let d=1;
-
-  for(let i=0;i<6;i++){
-    const row=document.createElement("tr");
-
-    for(let j=0;j<7;j++){
-      const cell=document.createElement("td");
-
-      if(i===0 && j<first || d>days){
-        cell.textContent="";
-      } else {
-        const key=`${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-        const ev=events[key];
-
-        const container = document.createElement("div");
-        container.className = "day-cell-container";
-
-        const num=document.createElement("div");
-        num.className="day-number";
-        num.textContent=d;
-
-        const ta=document.createElement("textarea");
-        ta.value=ev?.nome || "";
-        ta.readOnly = true; // Rende textarea non modificabile direttamente
-        ta.onclick=()=>openModal(key);
-
-        container.append(num,ta);
-        cell.append(container);
+  let d = 1;
+  for (let i = 0; i < 6; i++) {
+    const row = document.createElement("tr");
+    for (let j = 0; j < 7; j++) {
+      const cell = document.createElement("td");
+      if (i === 0 && j < first || d > last) { cell.style.border="none"; cell.style.background="transparent"; }
+      else {
+        const key = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+        cell.id = `td-${key}`;
+        cell.onclick = () => openModal(key);
+        const ev = events[key] || { nome: "", tipo: "" };
+        const lblClass = ev.tipo ? `lbl-${ev.tipo}` : "";
+        const bgClass = ev.tipo ? `bg-${ev.tipo}` : "";
+        cell.innerHTML = `
+          <div class="day-box ${bgClass}">
+            <span class="day-num">${d}</span>
+            ${ev.nome ? `<span class="day-label ${lblClass}">${ev.nome}</span>` : ''}
+          </div>`;
         d++;
       }
-
       row.appendChild(cell);
     }
-
     body.appendChild(row);
-    if(d>days) break;
+    if (d > last) break;
   }
-
-  updateActivities();
+  renderList();
 }
 
-function updateActivities(){
-  const list=document.getElementById("activities-list");
-  list.innerHTML="";
-
-  let has=false;
+function renderList() {
+  const list = document.getElementById("act-list");
+  list.innerHTML = "";
   const keys = Object.keys(events).filter(k => {
-      const [y,m] = k.split("-").map(Number);
-      return y === year && (m-1) === month && events[k].nome;
+    const [y, m] = k.split("-").map(Number);
+    return y === year && (m-1) === month && events[k].nome;
   }).sort();
 
-  for(const k of keys){
-    const ev=events[k];
-    const li=document.createElement("li");
+  keys.forEach(k => {
+    const ev = events[k];
+    const day = k.split("-")[2];
+    const card = document.createElement("div");
+    card.className = "activity-card";
+    card.id = `card-${k}`;
+    const cardColor = colorMap[ev.tipo] || "#eee";
     
-    // Formatta data leggibile
-    const [,m,d] = k.split("-");
-    const dataLabel = `${d}/${m}`;
-    
-    li.innerHTML=`<span class="act-date">${dataLabel}</span> <span class="act-name">${ev.nome}</span>`;
-    li.onclick=()=>selectEvent(k, li); // Passa elemento li per highlight
-
-    list.appendChild(li);
-    has=true;
-  }
-
-  if(!has) list.innerHTML="<li style='cursor:default; justify-content:center;'>Nessun evento questo mese</li>";
-  
-  // Rimuove dettaglio se cambio mese
-  document.getElementById("detail-empty").style.display="block";
-  document.getElementById("detail-content").style.display="none";
-  selectedKey = null;
+    card.innerHTML = `
+      <div class="day-square" style="background:${cardColor}">
+        <b>${day}</b>
+        <span>${mesiNomi[month].substring(0,3)}</span>
+      </div>
+      <img src="${imgMap[ev.tipo]}" class="activity-img">
+      <div class="activity-info">
+        <b>${ev.nome}</b>
+        <span>${ev.tipo || 'evento'}</span>
+      </div>
+      <div class="edit-pencil" onclick="event.stopPropagation(); openModal('${k}')">✎</div>
+    `;
+    card.onclick = () => {
+        document.querySelectorAll('td').forEach(t => t.classList.remove('active-day'));
+        document.querySelectorAll('.activity-card').forEach(c => c.classList.remove('selected'));
+        document.getElementById(`td-${k}`)?.classList.add('active-day');
+        card.classList.add('selected');
+    };
+    list.appendChild(card);
+  });
 }
 
-// MODIFICA: Highlight resta selezionato
-function selectEvent(key, listItem){
-  selectedKey=key;
-  const ev=events[key];
-
-  // Gestione highlight
-  clearListSelection();
-  listItem.classList.add('selected'); // Aggiunge classe selected
-
-  document.getElementById("detail-empty").style.display="none";
-  document.getElementById("detail-content").style.display="block";
-
-  document.getElementById("detail-name").textContent=ev.nome;
-  document.getElementById("detail-date").textContent=key;
-  document.getElementById("detail-type").value=ev.tipo||"";
-
-  updateDetailImage(ev.tipo);
+function openModal(key) {
+  selectedKey = key;
+  const ev = events[key] || { nome: "", tipo: "" };
+  document.getElementById("in-name").value = ev.nome;
+  document.getElementById("in-type").value = ev.tipo || "";
+  document.getElementById("modal-img").src = imgMap[ev.tipo || ""];
+  document.getElementById("modal-overlay").style.display = "block";
 }
 
-function updateDetailImage(tipo){
-  const map={ cibo:"cibo.png", giretto:"giretto.png", girolungo:"girolungo.png", evento:"evento.png", compleanno:"compleanno.png", festa:"festa.png" };
-  const img=document.getElementById("detail-image");
-  if(tipo && map[tipo]){
-    img.src="img/"+map[tipo];
-    img.style.display="inline-block";
-  } else {
-    img.style.display="none";
-  }
-}
-
-function openModal(key){
-  selectedKey=key;
-  const ev=events[key]||{nome:"",tipo:""};
-  document.getElementById("event-name").value=ev.nome;
-  document.getElementById("event-date").value=key;
-  document.getElementById("event-type").value=ev.tipo;
-  updateModalImage(ev.tipo);
-  document.getElementById("event-modal").style.display="block";
-}
-
-function updateModalImage(tipo){
-  const map={ cibo:"cibo.png", giretto:"giretto.png", girolungo:"girolungo.png", evento:"evento.png", compleanno:"compleanno.png", festa:"festa.png" };
-  const img=document.getElementById("event-image");
-  if(tipo && map[tipo]){
-    img.src="img/"+map[tipo];
-    img.style.display="block";
-  } else {
-    img.style.display="none";
-  }
-}
-
-document.getElementById("detail-type").onchange=function(){
-  if(!selectedKey) return;
-  events[selectedKey].tipo=this.value;
-  updateDetailImage(this.value);
+document.getElementById("in-type").onchange = (e) => {
+    document.getElementById("modal-img").src = imgMap[e.target.value];
 };
 
-document.getElementById("event-type").onchange=function(){
-  updateModalImage(this.value);
+document.getElementById("btn-confirm").onclick = () => {
+  events[selectedKey] = { nome: document.getElementById("in-name").value, tipo: document.getElementById("in-type").value };
+  document.getElementById("modal-overlay").style.display = "none";
+  render();
 };
 
-document.getElementById("save-event").onclick=function(){
-  const name = document.getElementById("event-name").value.trim();
-  const type = document.getElementById("event-type").value;
-  
-  if(!name) { alert("Inserisci un nome per l'evento."); return; }
+document.getElementById("btn-cancel").onclick = () => document.getElementById("modal-overlay").style.display = "none";
+document.getElementById("prev-m").onclick = () => { month--; if(month<0){month=11;year--;} render(); };
+document.getElementById("next-m").onclick = () => { month++; if(month>11){month=0;year++;} render(); };
 
-  events[selectedKey]={ nome: name, tipo: type };
-  document.getElementById("event-modal").style.display="none";
-  generateCalendar(year,month);
-};
-
-document.getElementById("close-modal").onclick=function(){
-  document.getElementById("event-modal").style.display="none";
-};
-
-// Chiudi modale cliccando fuori
-window.onclick = function(event) {
-    const modal = document.getElementById("event-modal");
-    if (event.target == modal) { modal.style.display = "none"; }
-}
-
-document.getElementById("prev-month").onclick=()=>{
-  month--; if(month<0){month=11;year--;}
-  generateCalendar(year,month);
-};
-
-document.getElementById("next-month").onclick=()=>{
-  month++; if(month>11){month=0;year++;}
-  generateCalendar(year,month);
-};
-
-document.getElementById("save-github").onclick=async()=>{
-  const btn = document.getElementById("save-github");
-  const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = "Salvataggio...";
-
-  try {
-      const res = await fetch("https://tisbatuffoblog.vercel.app/api/update_agendaAPI",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify(events)
-      });
-      if(res.ok) alert("Agenda salvata con successo!");
-      else throw new Error("Errore server");
-  } catch(e) { alert("Errore durante il salvataggio."); }
-  
-  btn.disabled = false;
-  btn.innerHTML = originalText;
-};
-
-(async()=>{
-  await loadAgenda();
-  document.getElementById("loading").style.display="none";
-  generateCalendar(year,month);
-})();
+init();
 </script>
-
 </body>
 </html>
