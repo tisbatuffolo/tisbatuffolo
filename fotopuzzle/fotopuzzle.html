@@ -54,7 +54,7 @@
     border-bottom: 4px dashed #ddd;
   }
 
-  /* Titolo Sezioni: Boogaloo (Dinamico e di classe) */
+  /* Titolo Sezioni */
   .puzzle-title {
     font-family: 'Boogaloo', cursive;
     font-size: 4.5em;
@@ -65,7 +65,16 @@
     filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.1));
   }
 
-  /* Stile Bordi Originali (10px) */
+  /* Sottotitoli Nuovi */
+  .puzzle-subtitle {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.3em;
+    color: #000000;
+    margin-top: -25px;
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+
   .collage-container {
     position: relative;
     display: inline-block;
@@ -87,7 +96,7 @@
     border-radius: 18px;
   }
 
-  /* Modale Slider (Bellissimo e Scuro) */
+  /* Modale Slider */
   .modal {
     display: none;
     position: fixed;
@@ -122,14 +131,17 @@
     100% { transform: scale(1); opacity: 1; }
   }
 
+  /* Ottimizzazione Foto Verticali */
   .modal-img {
-    width: 100%;
+    max-width: 100%;
+    max-height: 65vh; /* Non supera il 65% dello schermo in altezza */
+    width: auto;
     height: auto;
+    object-fit: contain;
     border: 6px solid var(--cartoon-border-dark);
     border-radius: 25px;
   }
 
-  /* Titolo DENTRO lo slider: RIPRISTINATO LUCKIEST GUY */
   .modal-title {
     font-family: 'Luckiest Guy', cursive;
     margin: 20px 15px 10px;
@@ -140,7 +152,6 @@
     -webkit-text-stroke: 1px #000;
   }
 
-  /* Sottotitolo elegante */
   .modal-caption {
     display: block;
     font-size: 0.6em;
@@ -149,10 +160,10 @@
     margin-top: 8px;
     font-weight: 400;
     letter-spacing: 0;
-    -webkit-text-stroke: 0; /* Rimuove lo stroke per chiarezza */
+    -webkit-text-stroke: 0; 
   }
 
-  /* Pulsanti Originali Luckiest Guy */
+  /* Pulsanti Navigazione Modale */
   .nav-btn, .close-btn {
     position: absolute;
     background: var(--cartoon-yellow);
@@ -188,15 +199,16 @@
   /* Ottimizzazione Mobile */
   @media (max-width: 850px) {
     .nav-btn { 
-      width: 55px; height: 55px; font-size: 25px; 
-      bottom: -75px; top: auto; transform: none; 
+      width: 45px; height: 45px; font-size: 22px; 
     }
-    .prev-btn { left: 20%; }
-    .next-btn { right: 20%; }
-    .puzzle-title { font-size: 2.8em; }
+    .prev-btn { left: -5px; }
+    .next-btn { right: -5px; }
+    
+    .puzzle-title { font-size: 2.8em; margin-bottom: 25px; }
+    .puzzle-subtitle { font-size: 1.1em; margin-top: -15px; }
     .collage-container { border-width: 6px; }
-    .modal-content { border-width: 5px; margin-top: -40px; }
-    .modal-title { font-size: 1.6em; }
+    .modal-content { border-width: 5px; width: 94%; }
+    .modal-title { font-size: 1.4em; margin: 10px 5px 5px; }
   }
 </style>
 </head>
@@ -237,6 +249,16 @@
     4: '#e91e63', 5: '#673ab7', 6: '#00bcd4', 7: '#ff4747'
   };
 
+  const puzzleSubtitles = {
+    1: "Clicca per trovare i giri fatti nel 2018 e 2019!",
+    2: "Esplora tutte le foto dei giri 2020!",
+    3: "Fotopuzzle dei giri nel 2021!",
+    4: "Tutti i giretti del 2022!",
+    5: "Tutti i giri nel nostro anniversario lustro!",
+    6: "Tutti i giri del fotopuzzle tondo!",
+    7: "L'ultimo fotopuzzle....per ora!"
+  };
+
   const puzzleIds = [1, 2, 3, 4, 5, 6, 7];
   let allPuzzlesData = {}; 
   let currentPuzzleId = null;
@@ -245,10 +267,12 @@
   function createPuzzleSections() {
     puzzleIds.forEach((id) => {
       const color = puzzleColors[id];
+      const subtitle = puzzleSubtitles[id];
       const section = document.createElement('section');
       section.className = 'puzzle-section';
       section.innerHTML = `
         <h2 class="puzzle-title" style="color: ${color}">Fotopuzzle ${id}</h2>
+        <p class="puzzle-subtitle">${subtitle}</p>
         <div class="collage-container" style="border-color: ${color}; box-shadow: 18px 18px 0px ${color}">
           <img src="imm/fotopuzzle${id}.jpg" usemap="#map-puzzle-${id}" class="collage-img" id="img-puzzle-${id}">
           <map name="map-puzzle-${id}" id="map-puzzle-${id}"></map>
