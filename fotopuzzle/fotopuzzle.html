@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fotopuzzle - SbatuffoBlog</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Luckiest+Guy&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Grandstander:wght@900&family=Luckiest+Guy&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
   :root {
     --cartoon-yellow: #ffdf00;
     --cartoon-border-dark: #1a1a1a;
-    --header-bg: #e2eaff;
-    --header-blue: #2332bb;
+    --main-blue: #0000ff;
+    --light-blue-border: #bde0fe;
   }
 
   * { box-sizing: border-box; }
@@ -26,22 +26,48 @@
     overflow-x: hidden;
   }
 
-  /* Header stile PandaVideo */
+  /* Header aggiornato: sfondo bianco e layout con icona */
   header {
-    background: var(--header-bg);
-    padding: 20px 0 10px 0;
-    border-bottom: 1px solid #d0d9f0;
+    background: #fff; /* Sfondo bianco richiesto */
+    padding: 20px 20px;
+    border-bottom: 2px solid var(--main-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 80px;
+  }
+
+  .home-icon {
+    position: absolute;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+
+  .home-icon:hover {
+    transform: scale(1.1);
+  }
+
+  .home-icon svg {
+    width: 40px;
+    height: 40px;
+    fill: var(--main-blue); /* Colore coerente con il brand */
   }
 
   header h1 {
-    color: var(--header-blue);
-    font-size: 2.2em;
+    font-family: 'Grandstander', cursive;
+    color: var(--main-blue);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     margin: 0;
-    font-weight: 600;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1;
   }
 
   header h1 a {
-    color: var(--header-blue);
+    color: var(--main-blue);
     text-decoration: none;
   }
 
@@ -54,7 +80,6 @@
     border-bottom: 4px dashed #ddd;
   }
 
-  /* Titolo Sezioni */
   .puzzle-title {
     font-family: 'Boogaloo', cursive;
     font-size: 4.5em;
@@ -65,7 +90,6 @@
     filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.1));
   }
 
-  /* Sottotitoli Nuovi */
   .puzzle-subtitle {
     font-family: 'Fredoka', sans-serif;
     font-size: 1.3em;
@@ -96,7 +120,6 @@
     border-radius: 18px;
   }
 
-  /* Modale Slider */
   .modal {
     display: none;
     position: fixed;
@@ -131,10 +154,9 @@
     100% { transform: scale(1); opacity: 1; }
   }
 
-  /* Ottimizzazione Foto Verticali */
   .modal-img {
     max-width: 100%;
-    max-height: 65vh; /* Non supera il 65% dello schermo in altezza */
+    max-height: 65vh;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -163,7 +185,6 @@
     -webkit-text-stroke: 0; 
   }
 
-  /* Pulsanti Navigazione Modale */
   .nav-btn, .close-btn {
     position: absolute;
     background: var(--cartoon-yellow);
@@ -196,19 +217,17 @@
 
   .hidden { visibility: hidden; pointer-events: none; }
 
-  /* Ottimizzazione Mobile */
   @media (max-width: 850px) {
-    .nav-btn { 
-      width: 45px; height: 45px; font-size: 22px; 
-    }
+    .nav-btn { width: 45px; height: 45px; font-size: 22px; }
     .prev-btn { left: -5px; }
     .next-btn { right: -5px; }
-    
     .puzzle-title { font-size: 2.8em; margin-bottom: 25px; }
     .puzzle-subtitle { font-size: 1.1em; margin-top: -15px; }
     .collage-container { border-width: 6px; }
     .modal-content { border-width: 5px; width: 94%; }
     .modal-title { font-size: 1.4em; margin: 10px 5px 5px; }
+    .home-icon { left: 10px; }
+    .home-icon svg { width: 30px; height: 30px; }
   }
 </style>
 </head>
@@ -216,6 +235,11 @@
 <body>
 
 <header>
+  <a href="../index.html" class="home-icon" title="Torna alla Home">
+    <svg viewBox="0 0 24 24">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+  </a>
   <h1>
       <a class="home-link" href="../index.html">SbatuffoBlog</a>
       <span> - Fotopuzzle</span>
@@ -250,12 +274,12 @@
   };
 
   const puzzleSubtitles = {
-    1: "Clicca per trovare i giri fatti nel 2018 e 2019!",
-    2: "Esplora tutte le foto dei giri 2020!",
-    3: "Fotopuzzle dei giri nel 2021!",
+    1: "Scorri i nostri primi giri fatti nel 2018 e 2019!",
+    2: "Esplora tutte le foto nel fotopuzzle 2020!",
+    3: "Ricordati i nomi dei giri nel fotopuzzle 2021!",
     4: "Tutti i giretti del 2022!",
-    5: "Tutti i giri nel nostro anniversario lustro!",
-    6: "Tutti i giri del fotopuzzle tondo!",
+    5: "Guarda le foto nel nostro anniversario lustro!",
+    6: "Dove eravamo qui??? Ti ricordiiiii???",
     7: "L'ultimo fotopuzzle....per ora!"
   };
 
