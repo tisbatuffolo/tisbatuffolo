@@ -2,65 +2,252 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>PandaVideo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SbatuffoBlog - PandaVideo</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@600;900&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
+:root {
+  --primary: #55ef8b; 
+  --sbatuffo-blue: #0000ff;
+  --accent: #ff4757;
+  --bg-soft: #fdfdfd;
+  --text: #1a1a1a;
+  --stroke: #1a1a1a;
+  --heart-red: #ff4d4d;
+}
+
+body { 
+    font-family: 'Fredoka', sans-serif; 
+    margin: 0; 
+    background: var(--bg-soft); 
+    color: var(--text); 
+    overflow-x: hidden; 
     text-align: center;
-  }
+}
 
-  header {
-    background: #e2eaff;
-    padding: 20px 0 10px 0;
-  }
+/* --- HEADER --- */
+header {
+  background: #fff;
+  padding: 25px 10px 5px;
+  position: relative;
+}
 
-  header h1 {
-    color: #2332bb;
-    font-size: 2em;
-  }
+.header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
 
-  header h1 a {
-    color: #2332bb;
-    text-decoration: none;
-  }
+.home-link-img {
+  position: absolute;
+  left: 20px;
+  top: 5px;
+  transition: transform 0.2s ease;
+}
+.home-link-img:hover { transform: scale(1.1); }
+.home-link-img img { width: clamp(70px, 12vw, 100px); height: auto; }
 
-  header h1 a:hover {
-    color: #547bfc;
-  }
+.brand-title {
+  font-family: 'Grandstander', cursive;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 8vw, 4.2rem);
+  color: var(--sbatuffo-blue);
+  text-decoration: none;
+  line-height: 1;
+}
 
-  .content {
-    margin-top: 40px;
-  }
+.brand-subtitle {
+  font-size: clamp(0.9rem, 3vw, 1.2rem);
+  color: var(--primary);
+  font-weight: 700;
+  margin-top: 5px;
+  letter-spacing: 1.5px;
+  text-transform: lowercase;
+}
 
-  .content img {
-    max-width: 300px;
-  }
+/* --- DIVISORI --- */
+.section-divider {
+  max-width: 200px;
+  height: 3px;
+  background: var(--primary);
+  margin: 20px auto; /* Ridotto il margine per avvicinare i contenuti */
+  border-radius: 50px;
+  position: relative;
+}
+.section-divider::after {
+  content: "♥";
+  position: absolute;
+  top: -14px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-soft);
+  padding: 0 15px;
+  color: var(--heart-red);
+  font-size: 1.5rem;
+}
 
-  .message {
-    font-size: 1.8em;
-    margin-top: 20px;
-    color: red; /* 👈 cambiato qui */
-  }
+/* --- CONTENT --- */
+.content {
+    margin: 0 auto; /* Rimosso mega spazio inutile */
+    padding: 0 20px;
+    position: relative;
+}
+
+/* Palcoscenico per l'orbita - Altezza ottimizzata */
+.orbit-stage {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: 320px; 
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-img {
+    max-width: 260px;
+    height: auto;
+    border-radius: 20px;
+    z-index: 10;
+    position: relative;
+}
+
+/* --- IL PANDRONE (DOPPIO, NON SCHIACCIATO) --- */
+.drone-wrapper {
+    position: absolute;
+    width: 200px; /* Grande dimensione */
+    height: auto;
+    top: 50%; 
+    left: 50%;
+    margin-top: -100px; 
+    margin-left: -100px; 
+    pointer-events: none;
+    z-index: 20; 
+    /* Animazione orbita orizzontale ampia */
+    animation: orbit-horizontal 7s ease-in-out infinite;
+}
+
+.drone-img {
+    width: 100%;
+    height: auto;
+    /* Oscillazione volo naturale */
+    animation: hover-shake 2s ease-in-out infinite;
+}
+
+@keyframes orbit-horizontal {
+    0% {
+        transform: translateX(-380px) scale(1);
+        z-index: 20;
+    }
+    25% {
+        transform: translateX(0px) scale(1.15) translateY(-10px);
+        z-index: 20;
+    }
+    50% {
+        transform: translateX(380px) scale(1);
+        z-index: 20;
+    }
+    50.1% {
+        z-index: 5; /* Passa dietro l'immagine */
+    }
+    75% {
+        transform: translateX(0px) scale(0.85) translateY(10px);
+        z-index: 5;
+    }
+    100% {
+        transform: translateX(-380px) scale(1);
+        z-index: 5;
+    }
+}
+
+@keyframes hover-shake {
+    0%, 100% { transform: rotate(-3deg) translateY(0); }
+    50% { transform: rotate(3deg) translateY(-5px); }
+}
+
+.message {
+    font-family: 'Grandstander', cursive;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-top: 10px; /* Ridotto per compattezza */
+    color: #ff4757;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 50;
+}
+
+/* --- FOOTER --- */
+footer { 
+    background: #fff; 
+    padding: 10px 10px 30px; 
+}
+.footer-container { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    position: relative; 
+    max-width: 1100px; 
+    margin: 0 auto; 
+}
+.footer-home { position: absolute; left: 20px; }
+.footer-home img { width: 60px; height: auto; }
+.footer-text { font-family: 'Grandstander', cursive; font-weight: 600; font-size: 1.1rem; color: #444; }
+
+@media (max-width: 768px) {
+    .drone-wrapper { width: 140px; margin-left: -70px; }
+    @keyframes orbit-horizontal {
+        0% { transform: translateX(-160px) scale(1); z-index: 20; }
+        25% { transform: translateX(0px) scale(1.1) translateY(-5px); z-index: 20; }
+        50% { transform: translateX(160px) scale(1); z-index: 20; }
+        50.1% { z-index: 5; }
+        75% { transform: translateX(0px) scale(0.9) translateY(5px); z-index: 5; }
+        100% { transform: translateX(-160px) scale(1); z-index: 5; }
+    }
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>
-      <a class="home-link" href="../index.html">SbatuffoBlog</a>
-      <span> - PandaVideo</span>
-  </h1>
+  <div class="header-container">
+    <a href="../index.html" class="home-link-img"><img src="img/home.png" alt="Home"></a>
+    <div class="brand-wrapper">
+      <a href="../index.html" class="brand-title">SbatuffoBlog</a>
+      <div class="brand-subtitle">PandaVideo</div>
+    </div>
+  </div>
 </header>
 
-<div class="content">
-  <img src="img/workinprogress.png" alt="Work in progress">
+<div class="section-divider"></div>
+
+<main class="content">
+  <div class="orbit-stage">
+    <img src="img/workinprogress.png" alt="Work in progress" class="main-img">
+    
+    <div class="drone-wrapper">
+        <img src="img/pandrone.png" alt="Pandrone" class="drone-img">
+    </div>
+  </div>
 
   <div class="message">
     Non posso fare video fino a quando non mi regali un pandrone!
   </div>
-</div>
+</main>
+
+<div class="section-divider"></div>
+
+<footer>
+    <div class="footer-container">
+    <a href="../index.html" class="footer-home"><img src="img/home.png" alt="Home"></a>
+    <div class="footer-text">@SbatuffoBlog 2026</div>
+  </div>
+</footer>
 
 </body>
 </html>

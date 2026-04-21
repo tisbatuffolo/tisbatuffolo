@@ -2,286 +2,302 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Doccelunghe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SbatuffoBlog - Doccelunghe</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@600;900&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    /* Header con sfondo azzurro */
-    header {
-      background-color: #e3f0ff;
-      padding: 20px 0;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      font-size: 2.3em;
-      font-weight: bold;
-      color: #2332bb;
-    }
-
-    header h1 a.home-link {
-      color: #2332bb;
-      text-decoration: none;
+    :root {
+      --theme-color: #ff802b; 
+      --sbatuffo-blue: #0000ff;
+      --text-dark: #1a1a1a;
+      --card-blue: #2366c6;
+      --heart-red: #ff4d4d;
+      --bg-soft: #fdfdfd;
+      --stroke: #1a1a1a;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f9fafd;
+      font-family: 'Fredoka', sans-serif;
+      background: var(--bg-soft);
       margin: 0;
       padding: 0;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      color: var(--text-dark);
     }
 
-    main { flex: 1; }
+    /* --- HEADER --- */
+    header { background: #fff; padding: 25px 10px 5px; text-align: center; }
+    .header-container { display: flex; justify-content: center; align-items: center; gap: 30px; position: relative; }
+    .home-link-img { position: absolute; left: 20px; top: 5px; }
+    .home-link-img img { width: 80px; height: auto; }
+    .brand-title { font-family: 'Grandstander', cursive; font-weight: 900; font-size: 3.5rem; color: var(--sbatuffo-blue); text-decoration: none; }
+    .brand-subtitle { font-weight: 700; font-size: 1.1rem; color: var(--theme-color); text-transform: lowercase; }
 
-    footer {
-      color: #888;
-      text-align: center;
-      margin: 16px 0 8px 0;
+    /* --- DIVISORI (CORTI COME PANDAGENDA) --- */
+    .divider-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 150px; /* Lunghezza ridotta */
+      margin: 25px auto;
+    }
+    .linea-arancio {
+      flex: 1;
+      height: 0;
+      border-bottom: 3px solid var(--theme-color);
+    }
+    .cuore-div {
+      padding: 0 10px;
+      color: var(--heart-red);
+      font-size: 1.4rem;
     }
 
-    .counter-container {
-      max-width: 600px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 20px;
-      border: 3px solid #2366c6;
-      box-shadow: 0 4px 18px rgba(26,50,120,0.08);
-      font-size: 1.3em;
-      text-align: center;
-    }
-    .counter-container p { margin: 12px 0; font-weight: bold; color: #2366c6; }
-
-    .sezione-docce { max-width: 1100px; margin: 50px auto; padding: 0 10px; }
-    .sezione-docce h2 { text-align: center; font-size: 1.7em; color: #1b2566; margin-bottom: 24px; }
-
-    .grid-riquadri {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+    /* --- BOX CONTATORI (STILE AGGIUNGI DOCCIA) --- */
+    .stats-box {
       max-width: 550px;
-      justify-items: center;
-    }
-    .riquadro {
-      background: #fff;
-      border: 3px solid #2366c6;
+      margin: 10px auto 35px;
+      background: #ffffff; /* Sfondo bianco richiesto */
+      padding: 15px;
       border-radius: 25px;
-      box-shadow: 0 4px 18px rgba(26,50,120,0.08);
+      border: 3px solid var(--card-blue); /* Contorno azzurro */
+      text-align: center;
+      font-family: 'Grandstander', cursive; /* Stesso font bottone */
+      font-weight: 900; /* Grassetto */
+    }
+    .stats-box p { 
+      margin: 5px 0; 
+      color: var(--text-dark);
+      font-size: 1.3rem;
+    }
+    .stats-box span { 
+      color: var(--theme-color); 
+      font-size: 1.7rem;
+    }
+
+    main { flex: 1; padding: 0 15px; }
+
+    /* --- LAYOUT BILANCIATO --- */
+    .main-layout {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* COLONNA SINISTRA (CARD) */
+    .months-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 125px); /* Dimensione fissa per coerenza */
+      gap: 10px;
+    }
+    .month-card {
+      background: #fff;
+      border: 3px solid var(--card-blue);
+      border-radius: 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 150px;
-      height: 180px;
-      transition: transform 0.15s, box-shadow 0.15s;
-      justify-content: flex-start;
-      overflow: hidden;
+      justify-content: center;
+      height: 100px; /* Altezza calibrata */
+      transition: transform 0.2s;
     }
-    .riquadro:hover { transform: scale(1.03); box-shadow: 0 6px 24px rgba(26,50,120,0.16); }
-    .riquadro-titolo { font-size: 1.2em; font-weight: bold; text-align: center; padding: 12px 8px 8px 8px; color: #1b2566; letter-spacing: 1px; }
+    .month-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 2px; }
+    .month-count { font-family: 'Grandstander', cursive; font-weight: 900; font-size: 2.1rem; color: var(--theme-color); }
 
-    #trend-image { 
-      margin-top: 20px; 
-      width: 400px; 
-      height: auto; 
-      display: block; 
-      border-radius: 15px;
-      box-shadow: 0 4px 18px rgba(26,50,120,0.08);
+    /* COLONNA DESTRA (GRAFICO + IMG) */
+    .visual-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 400px;
     }
+    canvas#docce-trend {
+      background: #fff;
+      border: 3px solid var(--card-blue);
+      border-radius: 20px;
+      width: 100%;
+      height: 250px; /* Pareggia le 4 file di card (100*4 + gap) */
+    }
+    #trend-image { width: 190px; margin-top: 15px; height: auto; }
 
-    /* Stile Bottone Aggiungi */
+    /* BOTTONE CENTRALE */
+    .btn-wrap { text-align: center; margin: 40px 0; }
     #btn-aggiungi {
-      margin-top: 25px;
-      padding: 15px 30px;
-      background-color: #ff4d4d;
-      color: white;
-      border: none;
+      padding: 15px 45px;
+      background: var(--heart-red);
+      color: #fff;
+      border: 3px solid var(--stroke);
       border-radius: 50px;
-      font-size: 1.2em;
-      font-weight: bold;
+      font-family: 'Grandstander', cursive;
+      font-size: 1.5rem;
+      font-weight: 900;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
-      transition: background 0.2s, transform 0.1s;
+      box-shadow: 5px 5px 0 var(--stroke);
     }
-    #btn-aggiungi:hover { background-color: #e60000; transform: translateY(-2px); }
-    #btn-aggiungi:active { transform: translateY(0); }
+    #btn-aggiungi:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--stroke); }
+
+    footer { padding: 30px; text-align: center; font-family: 'Grandstander'; color: #666; }
+
+    /* Mobile: Manteniamo il layout affiancato rimpicciolendo */
+    @media (max-width: 800px) {
+      .main-layout { gap: 10px; }
+      .months-grid { grid-template-columns: repeat(3, 1fr); width: 55%; }
+      .visual-col { width: 45%; }
+      .month-card { height: 85px; }
+      canvas#docce-trend { height: 210px; }
+    }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>
-      <a class="home-link" href="../index.html">SbatuffoBlog</a>
-      <span> - Doccelunghe</span>
-    </h1>
+    <div class="header-container">
+      <a href="../index.html" class="home-link-img"><img src="img/home.png"></a>
+      <div>
+        <div class="brand-title">SbatuffoBlog</div>
+        <div class="brand-subtitle">doccelunghe</div>
+      </div>
+    </div>
   </header>
 
+  <div class="divider-wrapper">
+    <div class="linea-arancio"></div>
+    <div class="cuore-div">♥</div>
+    <div class="linea-arancio"></div>
+  </div>
+
   <main>
-    <div class="counter-container">
-      <p id="docce-anno">Caricamento...</p>
-      <p id="docce-mese">Caricamento...</p>
+    <div class="stats-box">
+      <p>Docce da inizio anno: <span id="tot-anno">...</span></p>
+      <p>Docce in questo mese: <span id="tot-mese">...</span></p>
     </div>
 
-    <div class="sezione-docce">
-      <h2>Docce Insieme</h2>
-      <div style="display:flex; flex-wrap:wrap; justify-content: center; gap: 40px;">
-        <div class="grid-riquadri" id="docce-grid" style="flex:1; min-width: 320px;"></div>
+    <div class="main-layout">
+      <div class="months-grid" id="grid"></div>
 
-        <div style="flex:1; min-width: 320px; display:flex; flex-direction:column; align-items:center;">
-          <canvas id="docce-trend" width="400" height="240" style="background:#fff; border:3px solid #2366c6; border-radius:20px; box-shadow:0 4px 18px rgba(26,50,120,0.08);"></canvas>
-          <div style="margin-top:10px; font-weight:bold; color:#2366c6;">Trend docce mese per mese</div>
-          <img id="trend-image" src="" alt="Trend docce">
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <button id="btn-aggiungi">Aggiungi Doccia 🚿</button>
-        </div>
+      <div class="visual-col">
+        <canvas id="docce-trend" width="400" height="250"></canvas>
+        <img id="trend-image" src="" alt="Status">
       </div>
+    </div>
+
+    <div class="btn-wrap">
+      <button id="btn-aggiungi">Aggiungi Doccia 🚿</button>
     </div>
   </main>
 
+  <div class="divider-wrapper">
+    <div class="linea-arancio"></div>
+    <div class="cuore-div">♥</div>
+    <div class="linea-arancio"></div>
+  </div>
+
+  <footer>@SbatuffoBlog 2026</footer>
+
   <script>
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
     const mesi = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
+    const d = new Date();
+    const curY = d.getFullYear(), curM = d.getMonth() + 1;
+    let dataDocce = {};
 
-    const canvas = document.getElementById('docce-trend');
-    const ctx = canvas.getContext('2d');
-    const padding = 35;
-    const w = canvas.width - padding * 2;
-    const h = canvas.height - padding * 2;
+    function render() {
+      const annoData = dataDocce[curY] || {};
+      let total = 0;
+      for(let i=1; i<=12; i++) total += (annoData[i] || 0);
 
-    let docceData = {};
+      document.getElementById('tot-anno').textContent = total;
+      document.getElementById('tot-mese').textContent = annoData[curM] || 0;
 
-    // 1. CARICAMENTO DATI DA JSON
-    fetch('docce.json')
-      .then(res => res.json())
-      .then(data => {
-        docceData = data;
-        renderizzaPagina();
-      })
-      .catch(err => {
-        console.error("Errore caricando docce.json:", err);
-        document.getElementById('docce-anno').textContent = "Errore caricamento dati";
-      });
-
-    // 2. FUNZIONE DI RENDERING
-    function renderizzaPagina() {
-      const annoData = docceData[year] || {};
-      const docceMeseAttuale = annoData[month] || 0;
-
-      // Aggiornamento contatori testuali
-      let docceAnnoTotal = 0;
-      for(let m=1; m<=12; m++) docceAnnoTotal += (annoData[m] || 0);
-      document.getElementById('docce-anno').textContent = `Docce da inizio anno: ${docceAnnoTotal}`;
-      document.getElementById('docce-mese').textContent = `Docce in questo mese: ${docceMeseAttuale}`;
-
-      // Generazione Card Mesi
-      const grid = document.getElementById('docce-grid');
+      const grid = document.getElementById('grid');
       grid.innerHTML = "";
-      mesi.forEach((nome, i) => {
+      mesi.forEach((n, i) => {
         const m = i + 1;
         const count = annoData[m] || 0;
-        const riquadro = document.createElement('div');
-        riquadro.className = 'riquadro';
+        const card = document.createElement('div');
+        card.className = 'month-card';
         
-        // Stile mese corrente: Bordo Rosso
-        if(m === month) riquadro.style.borderColor = "red";
+        // Bordo rosso per mese attuale
+        if(m === curM) card.style.borderColor = "red";
 
-        const titolo = document.createElement('div');
-        titolo.className = 'riquadro-titolo';
-        titolo.textContent = nome;
-
-        const numero = document.createElement('div');
-        numero.style.fontSize = '2.2em';
-        numero.style.fontWeight = 'bold';
-        numero.style.marginTop = '20px';
-        // Stile mese corrente: Numero Rosso
-        numero.style.color = (m === month) ? "red" : "#2366c6";
-        numero.textContent = count;
-
-        riquadro.appendChild(titolo);
-        riquadro.appendChild(numero);
-        grid.appendChild(riquadro);
+        card.innerHTML = `<div class="month-name">${n}</div>
+                          <div class="month-count" style="color:${m===curM?'red':''}"> ${count} </div>`;
+        grid.appendChild(card);
       });
 
-      // Disegno Grafico Trend
-      const values = mesi.map((_, i) => annoData[i + 1] || 0);
-      const maxVal = Math.max(...values, 5);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Canvas Trend
+      const c = document.getElementById('docce-trend'), ctx = c.getContext('2d');
+      const p = 35, w = c.width - p*2, h = c.height - p*3;
+      const vals = mesi.map((_, i) => annoData[i+1] || 0);
+      const max = Math.max(...vals, 5);
 
-      // Assi
-      ctx.strokeStyle = "#eee"; ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(padding, padding); ctx.lineTo(padding, h + padding);
-      ctx.lineTo(w + padding, h + padding); ctx.stroke();
+      ctx.clearRect(0,0,c.width,c.height);
 
-      // Linea trend
-      ctx.strokeStyle = "#547bfc"; ctx.lineWidth = 3;
-      ctx.beginPath();
-      values.forEach((v, i) => {
-        const x = padding + (i / (values.length - 1)) * w;
-        const y = padding + h - (v / maxVal) * h;
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      // Titolo DENTRO il grafico
+      ctx.fillStyle = "#000";
+      ctx.font = "Bold 18px Grandstander";
+      ctx.textAlign = "center";
+      ctx.fillText("Trend docce mese per mese", c.width/2, 25);
+
+// ... (resto del codice invariato fino al canvas)
+
+      // Linea Trend - MODIFICATA DA #ff802b a #2366c6
+      ctx.beginPath(); 
+      ctx.strokeStyle = "#2366c6"; // Colore card-blue
+      ctx.lineWidth = 4;
+      ctx.lineJoin = "round";
+      vals.forEach((v, i) => {
+        const x = p + (i/11)*w, y = p + h - (v/max)*h + 20;
+        i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
       });
       ctx.stroke();
 
-      // Punti (Mese corrente Rosso e più Grande)
-      values.forEach((v, i) => {
-        const x = padding + (i / (values.length - 1)) * w;
-        const y = padding + h - (v / maxVal) * h;
+      // Punti
+      vals.forEach((v, i) => {
+        const x = p + (i/11)*w, y = p + h - (v/max)*h + 20;
         ctx.beginPath();
-        if(i + 1 === month) { 
-          ctx.arc(x, y, 8, 0, Math.PI * 2); 
-          ctx.fillStyle = "red"; 
-        } else { 
-          ctx.arc(x, y, 5, 0, Math.PI * 2); 
-          ctx.fillStyle = "#2366c6"; 
-        }
+        ctx.arc(x,y, (i+1===curM?7:4), 0, Math.PI*2);
+        // Colore punti - MODIFICATO DA #ff802b a #2366c6
+        ctx.fillStyle = (i+1===curM?"red":"#2366c6"); 
         ctx.fill();
-        ctx.strokeStyle = "white"; ctx.lineWidth = 2; ctx.stroke();
+        ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
+        
+        // Etichette mesi
+        ctx.fillStyle = "#333"; ctx.font = "bold 10px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(mesi[i].substring(0,3), x, h + p + 40);
       });
 
-      // Etichette mesi
-      ctx.fillStyle = "#1b2566"; ctx.font = "10px Arial";
-      values.forEach((_, i) => {
-        const x = padding + (i / (values.length - 1)) * w;
-        ctx.fillText(mesi[i].substring(0, 3), x - 10, h + padding + 15);
-      });
+// ... (resto del codice invariato)
 
-      // Immagine trend (Pandafelice/Pandatriste)
-      const trendImg = document.getElementById('trend-image');
-      const docceMesePrec = annoData[month - 1] || 0;
-      trendImg.src = (docceMeseAttuale >= docceMesePrec) ? "img/docciafelice.png" : "img/docciatriste.png";
+      document.getElementById('trend-image').src = (annoData[curM] >= (annoData[curM-1]||0)) ? "img/docciafelice.png" : "img/docciatriste.png";
     }
 
-    // 3. LOGICA BOTTONE AGGIUNGI (LOCALE + API)
-    document.getElementById('btn-aggiungi').addEventListener('click', () => {
-      // Aggiornamento immediato in memoria (ottimistico)
-      if(!docceData[year]) docceData[year] = {};
-      if(!docceData[year][month]) docceData[year][month] = 0;
-      docceData[year][month]++;
-      renderizzaPagina();
+    // Caricamento dati
+    fetch('docce.json').then(r => r.json()).then(d => { dataDocce = d; render(); });
 
-      // Chiamata all'API Vercel
-      const API_URL = 'https://tisbatuffoblog.vercel.app/api/update_docceAPI';
-      fetch(API_URL, { 
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      })
-      .then(res => {
-        if(!res.ok) throw new Error("Errore salvataggio server");
-        console.log("Richiesta di aggiornamento inviata a GitHub");
-      })
-      .catch(err => {
-        console.error("Errore API:", err);
-        alert("Impossibile salvare il dato su GitHub. Riprova più tardi.");
-      });
-    });
+    // Funzione Aggiorna con protezione API
+    document.getElementById('btn-aggiungi').onclick = async () => {
+      if(!dataDocce[curY]) dataDocce[curY] = {};
+      dataDocce[curY][curM] = (dataDocce[curY][curM] || 0) + 1;
+      render();
+
+      try {
+        await fetch('https://tisbatuffoblog.vercel.app/api/update_docceAPI', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'}
+        });
+      } catch (e) {
+        console.error("Errore nel salvataggio API:", e);
+      }
+    };
   </script>
 </body>
 </html>
