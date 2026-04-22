@@ -68,10 +68,10 @@
       margin-top: 5px;
       letter-spacing: 1.5px;
       text-transform: lowercase;
-      min-height: 1.5em; /* Previene saltelli se la frase è vuota inizialmente */
+      min-height: 1.5em;
     }
 
-    /* --- DIVISORI --- */
+    /* --- DIVISORI (Senza sfondo bianco) --- */
     .section-divider {
       max-width: 200px;
       height: 3px;
@@ -83,12 +83,11 @@
     .section-divider::after {
       content: "♥";
       position: absolute;
-      top: -14px; left: 50%;
-      transform: translateX(-50%);
-      background: var(--bg-soft);
-      padding: 0 15px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
       color: var(--heart-red);
       font-size: 1.5rem;
+      /* Sfondo e padding rimossi per togliere il rettangolo bianco */
     }
 
     /* --- SLIDER --- */
@@ -101,7 +100,6 @@
       border-radius: 25px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
       position: relative;
-      /* Fix per stabilità scroll mobile */
       touch-action: pan-y; 
       -webkit-backface-visibility: hidden;
     }
@@ -140,7 +138,7 @@
 
     .c1 { background: #ff5e5e; } .c2 { background: #5eb5ff; } .c3 { background: #ffde59; }
     .c4 { background: #00cec9; } .c5 { background: #00244d; } .c6 { background: #ff802b; }
-    .c7 { background: #f13bd2; } .c8 { background: #55ef8b; } .c9 { background: #efaae0; }
+    .c7 { background: #f13bd2; } .c8 { background: #55ef8b; } .c9 { background: #ffcbfe; }
 
     /* --- TIMER SECTION --- */
     .timer-section {
@@ -151,7 +149,7 @@
     .timer-section h2 {
       font-family: 'Grandstander';
       color: var(--main-blue);
-      margin: 0 0 15px 0;
+      margin: 50px 0 15px 0;
       font-size: 1.6rem;
     }
 
@@ -160,6 +158,7 @@
       justify-content: center;
       gap: 12px;
       perspective: 1000px;
+      transform-origin: center top;
     }
 
     .pulse-wrapper {
@@ -188,6 +187,8 @@
       align-items: center;     
       background: #eff7ff;
       clip-path: path('M50 85 C 30 70, 15 55, 15 38 C 15 25, 25 18, 38 18 C 45 18, 48 22, 50 25 C 52 22, 55 18, 62 18 C 75 18, 85 25, 85 38 C 85 55, 70 70, 50 85');
+      padding-top: 12px; /* Centratura ottica verticale dei numeri */
+      box-sizing: border-box;
     }
 
     .heart-back {
@@ -196,13 +197,6 @@
       transform: rotateY(180deg);
       font-family: 'Grandstander', cursive;
       font-size: 2.5rem;
-      padding-bottom: 12px; /* Allineamento ottico TVB */
-      box-sizing: border-box;
-    }
-
-    .heart-front {
-      padding-bottom: 15px; /* Allineamento ottico Numeri */
-      box-sizing: border-box;
     }
 
     .val { 
@@ -237,12 +231,12 @@
       font-size: 0.9rem;
     }
 
+    /* --- MOBILE --- */
     @media (max-width: 450px) {
-      .timer-wrap { gap: 6px; }
-      .heart-flip { width: 90px; height: 90px; }
-      .val { font-size: 1.5rem; }
-      .heart-back { font-size: 2.2rem; padding-bottom: 14px; }
-      .heart-front { padding-bottom: 18px; } /* Centratura mobile migliorata */
+      .timer-wrap { 
+        gap: 8px; 
+        transform: scale(0.92); /* Ridimensiona mantenendo le proporzioni e la centratura interna */
+      }
       .brand-title { font-size: 2.2rem; }
       .header-container { gap: 15px; }
     }
@@ -312,7 +306,7 @@
         <div class="card-info"><div class="card-title">Pandavideo</div><div class="color-line c8"></div></div>
         <div class="card-img"><img src="img/pandavideo.jpg"></div>
       </a>
-      <a href="Pandamusic/pandamusic.html" class="card">
+      <a href="pandamusic/pandamusic.html" class="card">
         <div class="card-info"><div class="card-title">PandaMusic</div><div class="color-line c9"></div></div>
         <div class="card-img"><img src="img/pandamusic.jpg"></div>
       </a>
@@ -431,7 +425,6 @@
       document.getElementById("months").innerText = months;
       document.getElementById("days").innerText = days;
 
-      // Logica Messaggi Anniversario
       const msgBox = document.getElementById("anniversary-msg");
       if (months === 0 && days === 0) {
         msgBox.innerHTML = "Oggi è il nostro anniversario! <3";
@@ -443,13 +436,12 @@
     }
     updateTimer();
 
-    /* --- FLIP TVB (Durata 2 pulsazioni = 3 secondi) --- */
+    /* --- FLIP TVB --- */
     const hearts = [document.getElementById('f1'), document.getElementById('f2'), document.getElementById('f3')];
     function triggerFlip() {
       hearts.forEach((h, i) => {
         setTimeout(() => {
           h.classList.add('flipped');
-          // 3000ms corrispondono a due cicli di animazione heartbeat (1.5s * 2)
           setTimeout(() => h.classList.remove('flipped'), 3000);
         }, i * 300); 
       });
