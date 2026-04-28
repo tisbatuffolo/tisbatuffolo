@@ -36,7 +36,7 @@ const GIRI = [
   },
   {
     "titolo": "Corno d'Aquilio",
-    "link": "https://www.outdooractive.com/it/route/ciaspole/provincia-di-verona/corno-d-aquilio/334085565/",
+    "link": "https://www.outdooractive.com/it/route/ciaspole/verona/corno-d-aquilio/334085565/",
     "img": "https://img3.oastatic.com/img2/624546094/800x600/variant.webp"
   },
   {
