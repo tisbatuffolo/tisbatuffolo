@@ -23,9 +23,9 @@
   --c-giretto: #ff8c00; 
   --c-girolungo: #05c46b;
   --c-evento: #575fcf; 
-  --c-compleanno: #008b8b;
+  --c-compleanno: #a55eea; /* Violetto */
   --c-festa: #ff00ff; 
-  --c-nessuna: #95a5a6; /* Grigio per categoria nessuna */
+  --c-nessuna: #95a5a6;
 }
 
 body { 
@@ -131,7 +131,7 @@ header {
 }
 table { width: 100%; border-collapse: separate; border-spacing: 4px; table-layout: fixed; }
 th { color: #888; font-size: 0.8rem; padding-bottom: 5px; font-weight: 500; }
-td { height: 85px; vertical-align: top; border-radius: 10px; border: 2px solid #f0f0f0; cursor: pointer; position: relative; transition: 0.2s; overflow: hidden; }
+td { height: 65px; vertical-align: top; border-radius: 10px; border: 2px solid #f0f0f0; cursor: pointer; position: relative; transition: 0.2s; overflow: hidden; }
 
 .active-day { border: 3px solid var(--primary) !important; background: #fff !important; z-index: 10; transform: scale(1.02); }
 
@@ -158,12 +158,7 @@ td { height: 85px; vertical-align: top; border-radius: 10px; border: 2px solid #
 .lbl-nessuna { background: var(--c-nessuna); color: #fff; }
 
 /* Backgrounds celle */
-.bg-cibo { background-color: rgba(255, 211, 42, 0.1); }
-.bg-giretto { background-color: rgba(255, 140, 0, 0.1); }
-.bg-girolungo { background-color: rgba(5, 196, 107, 0.1); }
-.bg-evento { background-color: rgba(87, 95, 207, 0.1); }
-.bg-compleanno { background-color: rgba(0, 139, 139, 0.1); }
-.bg-festa { background-color: rgba(255, 0, 255, 0.1); }
+.bg-compleanno { background-color: rgba(165, 94, 234, 0.1); }
 .bg-nessuna { background-color: rgba(149, 165, 166, 0.1); }
 
 #save-github {
@@ -175,7 +170,8 @@ td { height: 85px; vertical-align: top; border-radius: 10px; border: 2px solid #
 
 .section-title {
   font-family: 'Grandstander', cursive;
-  font-size: 1.7rem; font-weight: 900; margin: 30px 0 15px 0; 
+  font-size: 1.7rem; font-weight: 900; 
+  margin: 50px 0 15px 0; 
   border-left: 6px solid var(--primary); padding-left: 12px;
   color: var(--primary);
 }
@@ -250,8 +246,7 @@ td { height: 85px; vertical-align: top; border-radius: 10px; border: 2px solid #
     flex: 1; padding: 15px; border-radius: 15px; font-weight: 600; 
     border: 3px solid var(--stroke); cursor: pointer; font-family: 'Fredoka', sans-serif; font-size: 1rem;
 }
-#btn-confirm { background: var(--sbatuffo-blue); color: white; box-shadow: 4px 4px 0 var(--stroke); } /* Blu Sbatuffo */
-#btn-export { background: var(--export-excel); color: white; display: none; box-shadow: 4px 4px 0 var(--stroke); }
+#btn-confirm { background: var(--sbatuffo-blue); color: white; box-shadow: 4px 4px 0 var(--stroke); } 
 
 /* FOOTER */
 footer { background: #fff; padding: 20px 10px 40px; }
@@ -259,10 +254,6 @@ footer { background: #fff; padding: 20px 10px 40px; }
 .footer-home { position: absolute; left: 20px; }
 .footer-home img { width: clamp(50px, 8vw, 70px); height: auto; }
 .footer-text { font-family: 'Grandstander', cursive; font-weight: 600; font-size: 1.2rem; color: #444; }
-
-@media (max-width: 600px) {
-  .footer-home { position: static; margin-right: 15px; }
-}
 </style>
 </head>
 
@@ -340,7 +331,6 @@ footer { background: #fff; padding: 20px 10px 40px; }
             <input id="in-name" type="text" placeholder="Cosa farà lo sbatuffolone?">
         </div>
         <div class="modal-btns">
-          <button id="btn-export">Export 📅</button>
           <button id="btn-confirm">💾 SALVA</button>
         </div>
     </div>
@@ -403,14 +393,21 @@ function render() {
         let labelsHtml = "";
         dayEvents.forEach(item => {
             const lblClass = item.ev.tipo ? `lbl-${item.ev.tipo}` : "lbl-nessuna";
-            // Mostra sempre il nome dell'evento (punto 1)
             labelsHtml += `<span class="day-label ${lblClass}">${item.ev.nome}</span>`;
         });
 
-        // Sfondo grigio della cella se categoria nessuna (punto 2)
-        const cellBgClass = (dayEvents.length > 0 && dayEvents[0].ev.tipo === "") ? "bg-nessuna" : "";
+        const cellBgClass = (dayEvents.length > 0) ? (dayEvents[0].ev.tipo === "compleanno" ? "bg-compleanno" : (dayEvents[0].ev.tipo === "" ? "bg-nessuna" : "")) : "";
 
-        cell.onclick = () => { highlightDay(dateKey); openModal(dateKey); };
+        cell.onclick = () => { 
+            highlightDay(dateKey); 
+            if (dayEvents.length > 0) {
+                // Se ci sono eventi, apre il primo (anche se ricorsivo futuro)
+                openModal(dayEvents[0].origKey, dayEvents[0].idx, dateKey);
+            } else {
+                openModal(dateKey); 
+            }
+        };
+        
         cell.innerHTML = `<div class="day-box ${cellBgClass} ${isToday ? 'today-highlight' : ''}"><span class="day-num">${d}</span>${labelsHtml}</div>`;
         d++;
       }
@@ -422,14 +419,9 @@ function render() {
 }
 
 function highlightDay(key) { 
-    // Rimuove vecchie evidenziazioni
     document.querySelectorAll('td').forEach(t => t.classList.remove('active-day')); 
     document.querySelectorAll('.activity-card').forEach(c => c.classList.remove('selected-card'));
-    
-    // Evidenzia giorno calendario
     document.getElementById(`td-${key}`)?.classList.add('active-day'); 
-    
-    // Evidenzia card lista (punto 4)
     document.querySelectorAll(`.activity-card[data-key="${key}"]`).forEach(c => c.classList.add('selected-card'));
 }
 
@@ -454,6 +446,7 @@ function renderList() {
     card.className = "activity-card";
     card.setAttribute('data-key', item.dateKey); 
     const color = colorMap[item.ev.tipo] || "var(--c-nessuna)";
+    
     card.innerHTML = `
       <div class="day-square" style="background:${color};"><b>${item.dateKey.split("-")[2]}</b><span>${mesiNomi[month].substring(0,3)}</span></div>
       <img src="${imgMap[item.ev.tipo]}" class="activity-img">
@@ -461,9 +454,8 @@ function renderList() {
         <b>${item.ev.nome}</b>
         <div style="font-size:0.8rem; color:#666;">${item.ev.tipo || 'attività'} ${item.ev.ricorrenza === 'annuale' ? '<span class="recur-tag">ANNUALE</span>' : ''}</div>
       </div>
-      <div class="edit-pencil" onclick="event.stopPropagation(); openModal('${item.dateKey}', ${item.idx})">✎</div>`;
+      <div class="edit-pencil" onclick="event.stopPropagation(); openModal('${item.origKey}', ${item.idx})">✎</div>`;
     
-    // Cliccando sulla card evidenzia anche il calendario (punto 4)
     card.onclick = () => {
         highlightDay(item.dateKey);
         document.getElementById(`td-${item.dateKey}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -475,41 +467,37 @@ function renderList() {
 const modal = document.getElementById("modal-overlay");
 const btnNew = document.getElementById("btn-new-event");
 
-function openModal(dateStr, idx = null) {
+// Aggiunto targetDate per gestire il tasto "Nuovo" sui giorni futuri
+function openModal(dateStr, idx = null, targetDate = null) {
   selectedDateStr = dateStr;
   editEventIdx = idx;
-  const dayData = events[dateStr] || [];
   
-  if (idx === null && dayData.length > 0) {
-      editEventIdx = 0;
+  // Mostra tasto nuovo se stiamo visualizzando un evento esistente
+  if (idx !== null) {
       btnNew.style.display = "flex";
+      // Se clicchiamo "Nuovo", la data di destinazione deve essere quella cliccata sul calendario
+      btnNew.onclick = () => openModal(targetDate || dateStr, null);
   } else {
       btnNew.style.display = "none";
   }
 
-  const ev = (dayData[editEventIdx]) || { nome: "", tipo: "", ricorrenza: "singola" };
+  const evList = events[dateStr] || [];
+  const ev = (idx !== null && evList[idx]) ? evList[idx] : { nome: "", tipo: "", ricorrenza: "singola" };
+  
   document.getElementById("in-name").value = ev.nome;
   document.getElementById("in-type").value = ev.tipo || "";
   document.getElementById("in-recurrence").value = ev.ricorrenza || "singola";
   document.getElementById("modal-img").src = imgMap[ev.tipo || ""];
-  document.getElementById("btn-export").style.display = ev.nome ? "block" : "none";
   modal.style.display = "block";
 }
-
-btnNew.onclick = () => {
-    editEventIdx = null;
-    document.getElementById("in-name").value = "";
-    document.getElementById("in-type").value = "";
-    document.getElementById("in-recurrence").value = "singola";
-    document.getElementById("modal-img").src = imgMap[""];
-    btnNew.style.display = "none";
-};
 
 document.getElementById("btn-confirm").onclick = () => {
   const name = document.getElementById("in-name").value.trim();
   const type = document.getElementById("in-type").value;
   const rec = document.getElementById("in-recurrence").value;
+  
   if (!events[selectedDateStr]) events[selectedDateStr] = [];
+  
   if (name) {
       const newEv = { nome: name, tipo: type, ricorrenza: rec };
       if (editEventIdx !== null) events[selectedDateStr][editEventIdx] = newEv;
@@ -518,6 +506,7 @@ document.getElementById("btn-confirm").onclick = () => {
       events[selectedDateStr].splice(editEventIdx, 1);
       if (events[selectedDateStr].length === 0) delete events[selectedDateStr];
   }
+  
   modal.style.display = "none";
   render();
 };
