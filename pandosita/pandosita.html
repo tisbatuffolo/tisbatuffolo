@@ -3,413 +3,692 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SbatuffoBlog - Pandaccessori</title>
+<title>SbatuffoBlog - Pandosità</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@600;900&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --primary: #f13bd2; 
-  --sbatuffo-blue: #0000ff; 
-  --accent: #ff4757;
-  --bg-soft: #ffffff;
-  --text: #1a1a1a;
-  --heart-red: #ff4d4d;
-  --map-grass: #7bed9f;
-  --map-road: #57606f;
-}
+  :root {
+    --primary: #00cec9; /* Color Theme Pandosità */
+    --sbatuffo-blue: #0000ff;
+    --bg-soft: #fdfdfd;
+    --text: #1a1a1a;
+    --heart-red: #ff4d4d;
+    --zombie-eye: #a0ff00; /* Variabile per il colore degli occhi zombie/sottotitolo */
+  }
 
-body { font-family: 'Fredoka', sans-serif; margin: 0; background: var(--bg-soft); color: var(--text); overflow-x: hidden; }
+  body {
+    font-family: 'Fredoka', sans-serif;
+    text-align: center;
+    margin: 0;
+    background-color: var(--bg-soft);
+    color: var(--text);
+  }
 
-/* --- HEADER --- */
-header { background: #fff; padding: 15px 30px; border-bottom: 2px solid #f1f1f1; }
-.header-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 20px; }
-.home-link-img img { width: 60px; height: auto; transition: transform 0.3s; }
-.home-link-img img:hover { transform: rotate(-5deg) scale(1.1); }
-.brand-group { display: flex; flex-direction: column; }
-.brand-title { font-family: 'Grandstander', cursive; font-weight: 900; font-size: 2.8rem; color: var(--sbatuffo-blue); margin: 0; line-height: 1; }
-.brand-subtitle { font-size: 1.4rem; color: var(--primary); font-weight: 700; margin: 5px 0 0 0; text-transform: none; }
+  /* --- HEADER --- */
+  header {
+    background: #fff;
+    padding: 25px 10px 5px;
+    text-align: center;
+    position: relative;
+  }
 
-/* --- SEZIONE TITOLO & CONTEGGIO --- */
-.intro-stats { text-align: center; margin: 40px 20px 20px 20px; }
-.intro-stats h2 { font-family: 'Grandstander'; font-size: 3rem; color: var(--sbatuffo-blue); margin: 0 0 10px 0; }
-.intro-stats p { font-size: 1.5rem; font-weight: 600; color: var(--text); margin: 0; }
-.intro-stats span { color: var(--primary); font-size: 2rem; font-weight: 900; }
+  .header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+  }
 
-/* --- DIVISORE NETTO (Linea - Cuore - Linea) --- */
-.section-divider { 
-    display: flex; align-items: center; justify-content: center; 
-    margin: 40px auto; color: var(--heart-red); font-size: 2rem; gap: 15px; 
-}
-.section-divider::before, .section-divider::after { 
-    content: ""; width: 80px; height: 4px; background: var(--primary); border-radius: 2px; 
-}
+  .home-link-img {
+    position: absolute;
+    left: 20px;
+    top: 5px;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+  }
+  .home-link-img:hover { transform: scale(1.1); }
+  .home-link-img img { width: clamp(70px, 12vw, 100px); height: auto; }
 
-/* --- MAPPA SUPER DETTAGLIATA --- */
-.map-outer { background: #a2eafc; padding: 40px 0; perspective: 1000px; }
-.map-canvas { 
-    position: relative; width: 95%; max-width: 1100px; height: 650px; margin: 0 auto; 
-    background: var(--map-grass); border-radius: 50px; border: 12px solid #fff;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.2); overflow: hidden;
-}
+  .brand-title {
+    font-family: 'Grandstander', cursive;
+    font-weight: 900;
+    font-size: clamp(2.2rem, 8vw, 4.2rem);
+    color: var(--sbatuffo-blue);
+    margin: 0;
+    line-height: 1;
+    text-decoration: none;
+  }
 
-/* Strade, Autobus, Condominio, ecc. (invariati visivamente) */
-.m-road { position: absolute; background: var(--map-road); }
-.m-road.h { bottom: 120px; left: 0; width: 100%; height: 70px; }
-.m-road.h::before { content:''; position:absolute; top:33px; width:100%; border-top: 4px dashed rgba(255,255,255,0.4); }
-.m-road.v { top: 0; left: 40%; width: 70px; height: 100%; }
-.m-bus { position: absolute; bottom: 135px; width: 60px; height: 30px; background: #f1c40f; border-radius: 6px; border: 2px solid #333; animation: driveBus 20s linear infinite; }
-.m-bus::after { content:''; position:absolute; top:5px; left:5px; width:45px; height:10px; background: #81ecec; border-radius: 2px; }
-@keyframes driveBus { from { left: -100px; } to { left: 1200px; } }
-.m-condo { position: absolute; bottom: 200px; left: 8%; width: 160px; height: 280px; background: #f1f2f6; border: 3px solid #ced4da; border-radius: 8px; box-shadow: 10px 10px 0 rgba(0,0,0,0.1); }
-.m-condo .roof { position: absolute; top: -40px; left: -10px; width: 180px; height: 50px; background: #ff4757; clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); }
-.m-condo .balcony { width: 50px; height: 15px; background: #dfe4ea; margin: 20px auto; border: 2px solid #747d8c; position: relative; }
-.m-condo .flower { position: absolute; top: -10px; left: 5px; color: #ff6b81; font-size: 12px; }
-.m-car-blue { position: absolute; bottom: 100px; left: 12%; width: 70px; height: 35px; background: #0000ff; border-radius: 12px 18px 5px 5px; border: 3px solid #1a1a1a; z-index: 5; }
-.m-office { position: absolute; top: 50px; left: 15%; width: 130px; height: 150px; background: #7f8c8d; border: 4px solid #2d3436; }
-.m-office .win-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
-.m-office .win { background: #81ecec; height: 25px; border: 1px solid #fff; }
-.m-hill { position: absolute; top: 40px; right: 5%; width: 350px; height: 250px; background: #2ecc71; border-radius: 50%; box-shadow: inset -20px -20px 60px rgba(0,0,0,0.1); }
-.m-house-small { position: absolute; top: 30px; right: 18%; width: 90px; height: 70px; background: #fab1a0; border: 3px solid #e17055; border-radius: 5px; }
-.m-car-red { position: absolute; top: 120px; right: 10%; width: 60px; height: 30px; background: #d63031; border-radius: 10px; border: 3px solid #000; }
+  .brand-subtitle {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
+    color: var(--primary);
+    font-weight: 700;
+    margin-top: 5px;
+    letter-spacing: 1.5px;
+    text-transform: lowercase;
+  }
 
-/* Marker GPS */
-.m-pin { position: absolute; text-decoration: none; z-index: 100; transition: 0.3s; }
-.m-pin:hover { transform: scale(1.2) translateY(-5px); }
-.pin-label { background: var(--primary); color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 900; border: 2px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  /* --- DIVISORI --- */
+  .section-divider {
+    max-width: 200px;
+    height: 3px;
+    background: var(--primary);
+    margin: 30px auto;
+    border-radius: 50px;
+    position: relative;
+    clear: both;
+  }
+  .section-divider::after {
+    content: "♥";
+    position: absolute;
+    top: -14px; left: 50%;
+    transform: translateX(-50%);
+    padding: 0 15px;
+    color: var(--heart-red);
+    font-size: 1.5rem;
+    background: var(--bg-soft); 
+  }
 
-/* --- PLANIMETRIA CASA SBATUFFOLONE (Nuovo Layout a 6 stanze) --- */
-.plani-box { width: 100%; height: 550px; background: #fdfdfd; border: 6px solid #f1f1f1; border-radius: 30px; position: relative; margin-bottom: 40px; overflow: hidden; }
-.p-room { 
-    position: absolute; border: 3px solid #ddd; background: rgba(241, 59, 210, 0.05); 
-    border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-    font-weight: bold; color: #888; font-family: 'Grandstander'; font-size: 1.2rem;
-    cursor: pointer; transition: 0.3s;
-}
-.p-room:hover { background: rgba(241, 59, 210, 0.15); border-color: var(--primary); color: var(--primary); }
+  .sbatuffolart-section .section-divider::after { background: #fdfaf2; }
+  .sfigatini-section .section-divider::after { background: #000; }
+  .stickers-section .section-divider::after, 
+  .gif-section .section-divider::after, 
+  .lulu-sofa-section .section-divider::after { background: #fff; }
 
-.p-salotto { top: 5%; left: 5%; width: 45%; height: 40%; }
-.p-cucina { top: 5%; left: 52%; width: 43%; height: 30%; }
-.p-bagno { top: 37%; left: 52%; width: 20%; height: 25%; }
-.p-terrazzo { top: 37%; left: 74%; width: 21%; height: 25%; }
-.p-corridoio { top: 47%; left: 5%; width: 45%; height: 15%; background: #fff5f5; }
-.p-lettone { bottom: 5%; left: 5%; width: 90%; height: 30%; }
+  /* --- STILI SEZIONI --- */
+  .section-title { 
+    font-family: 'Grandstander', cursive;
+    color: #000; 
+    margin-bottom: 10px; 
+    font-size: 1.8em; 
+    font-weight: 900;
+  }
+  
+  /* Modifica 1: Sottotitoli allineati allo stile di brand-subtitle */
+  .section-subtitle { 
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
+    font-weight: 700;
+    color: #666; 
+    margin-bottom: 20px; 
+    margin-top: 0;
+    letter-spacing: 1.5px;
+  }
 
-/* Conta Panda nella stanza */
-.room-badge { 
-    background: var(--accent); color: #fff; border-radius: 50%; width: 35px; height: 35px;
-    display: flex; align-items: center; justify-content: center; margin-top: 10px; font-weight: 900;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #fff; font-size: 1rem; font-family: 'Fredoka';
-}
+  /* --- PANDA STICKERS --- */
+  .stickers-section { background: #fff; padding: 40px 0 60px 0; position: relative; overflow: hidden; }
+  .phone-wrapper { position: relative; display: inline-block; margin: 0 auto; }
+  .floating-heart, .pulsing-star { position: absolute; pointer-events: none; z-index: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+  .floating-heart { color: #ff8fab; font-size: 35px; animation: floatHeart 4s infinite ease-in-out; }
+  .pulsing-star { color: #ffd700; font-size: 22px; animation: pulseStar 2s infinite ease-in-out; }
+  @keyframes floatHeart { 0%, 100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.8; } 50% { transform: translateY(-25px) scale(1.1) rotate(10deg); opacity: 1; } }
+  @keyframes pulseStar { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.3); opacity: 1; filter: drop-shadow(0 0 8px #ffd700); } }
+  
+  .phone-container { width: 310px; height: 580px; background: #333639; border-radius: 55px; border: 8px solid #b1b4b8; box-shadow: 0 12px 0 #8a8d91, 0 30px 60px rgba(0,0,0,0.2); position: relative; padding: 12px; display: flex; flex-direction: column; align-items: center; z-index: 2; }
+  .phone-top-sensors { width: 120px; height: 25px; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; }
+  .camera-lens { width: 10px; height: 10px; background: #1a1a1a; border-radius: 50%; border: 2px solid #222; box-shadow: inset 0 0 3px #444; }
+  .speaker-grill { width: 50px; height: 6px; background: #222; border-radius: 10px; }
+  .phone-screen { width: 100%; height: 465px; background: #e0f7fa; border-radius: 38px; overflow: hidden; display: flex; flex-direction: column; position: relative; border: 3px solid #1a1a1a; margin-top: 10px; }
+  .phone-screen::before { content: ""; position: absolute; top: 10px; right: 15px; width: 60px; height: 120px; background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 60%); transform: rotate(-10deg); border-radius: 15px; z-index: 10; pointer-events: none; }
+  
+  .stickers-display { flex-grow: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 15px; overflow-y: auto; gap: 30px; background-image: radial-gradient(rgba(255,255,255,0.4) 2px, transparent 2px); background-size: 30px 30px; }
+  .stickers-display::-webkit-scrollbar { width: 5px; }
+  .stickers-display::-webkit-scrollbar-thumb { background: #ff8fab; border-radius: 10px; }
+  .sticker-item-phone { width: 155px; flex-shrink: 0; filter: drop-shadow(0 5px 12px rgba(0,0,0,0.12)); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .sticker-item-phone:hover { transform: scale(1.1) rotate(-3deg); }
+  .sticker-item-phone img { width: 100%; height: auto; display: block; }
+  .phone-button { width: 44px; height: 44px; background: transparent; border: 3px solid #b1b4b8; border-radius: 50%; margin-top: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
 
-/* --- GALLERIA --- */
-.section-container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
-.gallery-card { background: #fff; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eee; margin-bottom: 30px;}
-.gallery-title { font-family: 'Grandstander'; font-size: 2.2rem; color: var(--sbatuffo-blue); margin-bottom: 25px; text-align: center; }
-.grid-mini { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px; }
-.thumb-item { aspect-ratio: 1; border-radius: 15px; overflow: hidden; cursor: pointer; border: 4px solid #f8f8f8; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative;}
-.thumb-item:hover { transform: scale(1.05); border-color: var(--primary); z-index: 10;}
-.thumb-item img { width: 100%; height: 100%; object-fit: cover; }
-.thumb-title { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: #fff; font-size: 0.8rem; padding: 5px; text-align: center; font-weight: bold;}
+  /* --- PANDA GIF --- */
+  .gif-section { padding: 40px 0 60px 0; background: #fdfdfd; overflow: hidden; }
+  .camera-display-container { position: relative; max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+  .film-roll-container { width: 100%; background: #1a1a1a; padding: 20px 0; position: relative; border-top: 4px solid #333; border-bottom: 4px solid #333; box-shadow: 0 10px 20px rgba(0,0,0,0.2); overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth; display: flex; }
+  .film-roll-container::-webkit-scrollbar { display: none; }
+  .film-strip-gifs { display: flex; gap: 10px; padding: 0 50px; align-items: center; }
+  .film-frame-gif { flex: 0 0 220px; height: 160px; background: #000; position: relative; border-left: 15px solid #1a1a1a; border-right: 15px solid #1a1a1a; display: flex; align-items: center; justify-content: center; }
+  .film-frame-gif::before, .film-frame-gif::after { content: ""; position: absolute; left: -15px; right: -15px; height: 12px; background-image: radial-gradient(circle, #444 40%, transparent 45%); background-size: 20px 20px; }
+  .film-frame-gif::before { top: -16px; }
+  .film-frame-gif::after { bottom: -16px; }
+  .film-frame-gif video, .film-frame-gif img { width: 100%; height: 100%; object-fit: cover; border: 1px solid #333; }
+  .camera-body { width: 280px; height: 180px; background: #222; border-radius: 20px; margin-top: -30px; position: relative; z-index: 10; border: 5px solid #444; box-shadow: 0 15px 30px rgba(0,0,0,0.4); background: linear-gradient(145deg, #333, #111); }
+  .camera-lens-big { width: 110px; height: 110px; background: #111; border-radius: 50%; margin: 30px auto 0; border: 8px solid #333; box-shadow: inset 0 0 20px #000; position: relative; }
+  .camera-lens-inner { width: 40px; height: 40px; background: #050505; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px solid #222; }
+  .camera-flash { position: absolute; top: 15px; right: 20px; width: 40px; height: 30px; background: #444; border-radius: 5px; border: 2px solid #555; }
+  .camera-base-scroll { width: 320px; height: 50px; background: #444; border-radius: 0 0 15px 15px; margin-top: -10px; padding: 15px 20px; box-sizing: border-box; z-index: 9; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+  .custom-scrollbar-input { width: 100%; cursor: pointer; accent-color: var(--primary); }
+  
+  /* --- SBATUFFOLART --- */
+  .sbatuffolart-section { padding: 60px 0; background: #fdfaf2; overflow: hidden; position: relative; }
+  .art-container { display: flex; flex-direction: column; align-items: center; margin-top: 40px; position: relative; }
+  .easel { position: relative; width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center; z-index: 2; margin-top: 10px;}
+  .easel-back-leg { position: absolute; width: 18px; height: 110%; background: #6b4226; top: -5%; z-index: 1; border-radius: 8px; }
+  .easel-leg-left, .easel-leg-right { position: absolute; width: 24px; height: 115%; background: #8b5a2b; top: 0; z-index: 1; border-radius: 10px; box-shadow: inset 2px 0 5px rgba(0,0,0,0.2); }
+  .easel-leg-left { left: 12%; transform: rotate(10deg); transform-origin: top center; }
+  .easel-leg-right { right: 12%; transform: rotate(-10deg); transform-origin: top center; }
+  .easel-crossbar { position: absolute; bottom: 20%; width: 85%; height: 25px; background: #5c3a21; z-index: 2; border-radius: 5px; box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
+  .easel-top { position: absolute; top: -15px; width: 50px; height: 30px; background: #5c3a21; z-index: 4; border-radius: 5px; }
+  
+  .art-canvas { position: relative; width: 85%; max-width: 500px; height: 350px; background: #fffcf0; border: 15px solid #e0c8a0; box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.3); z-index: 3; margin: 30px 0 80px 0; border-radius: 5px; overflow: hidden; }
+  .canvas-splatters { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 10;
+      background: radial-gradient(circle at 15% 25%, rgba(255,99,71,0.6) 0%, rgba(255,99,71,0) 15px),
+                  radial-gradient(circle at 85% 75%, rgba(65,105,225,0.6) 0%, rgba(65,105,225,0) 25px),
+                  radial-gradient(circle at 80% 15%, rgba(50,205,50,0.5) 0%, rgba(50,205,50,0) 20px),
+                  radial-gradient(circle at 20% 80%, rgba(255,215,0,0.7) 0%, rgba(255,215,0,0) 30px),
+                  radial-gradient(circle at 50% 10%, rgba(238,130,238,0.5) 0%, rgba(238,130,238,0) 12px);
+  }
+  
+  .art-gallery-container { width: 100%; height: 100%; display: flex; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none; }
+  .art-gallery-container::-webkit-scrollbar { display: none; }
+  .art-frame { flex: 0 0 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 15px; box-sizing: border-box; }
+  .art-frame img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.15)); }
+  
+  .palette-wrapper { position: relative; z-index: 10; margin-top: -50px; display: flex; justify-content: center; align-items: center; }
+  .palette { width: 280px; height: 180px; background: #e0ac69; border-radius: 40% 60% 50% 40% / 50% 40% 60% 50%; box-shadow: inset -5px -5px 15px rgba(0,0,0,0.2), 0 15px 25px rgba(0,0,0,0.3); position: relative; padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; transform: rotate(-5deg); }
+  .palette-hole { position: absolute; top: 30px; left: 30px; width: 40px; height: 45px; background: #fdfaf2; border-radius: 50%; box-shadow: inset 3px 3px 8px rgba(0,0,0,0.3); }
+  .palette-text {
+    position: absolute; top: 50%; left: 50%; transform: translate(-40%, -50%) rotate(-5deg);
+    font-size: 48px; font-weight: bold; font-family: Arial, sans-serif; letter-spacing: 2px;
+    background: linear-gradient(45deg, #ff4500, #ffd700, #32cd32, #1e90ff, #9400d3);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 2px 4px rgba(0,0,0,0.3); pointer-events: none;
+  }
+  .paint-blob { position: absolute; border-radius: 50%; filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); }
+  .blob-1 { width: 25px; height: 30px; background: #ff4500; top: 20px; right: 50px; transform: rotate(15deg); }
+  .blob-2 { width: 35px; height: 25px; background: #1e90ff; top: 60px; right: 20px; transform: rotate(-20deg); }
+  .blob-3 { width: 20px; height: 20px; background: #32cd32; top: 80px; left: 90px; }
+  .blob-4 { width: 30px; height: 30px; background: #ffd700; top: 25px; left: 100px; }
+  
+  .brush { position: absolute; width: 140px; height: 12px; background: linear-gradient(to right, #d2b48c 70%, #a9a9a9 70%, #a9a9a9 80%, #333 80%); border-radius: 5px; z-index: 9; }
+  .brush-1 { top: -20px; left: -40px; transform: rotate(35deg); }
+  .brush-2 { top: 10px; right: -50px; transform: rotate(-120deg); background: linear-gradient(to right, #d2b48c 70%, #a9a9a9 70%, #a9a9a9 80%, #ff4500 80%); }
 
-/* --- MODALE --- */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; }
-.modal-overlay.active { display: flex; }
-.modal-body { background: #fff; max-width: 650px; width: 100%; border-radius: 30px; padding: 30px; position: relative; text-align: center; }
-.modal-img-container { width: 100%; height: 400px; background: #eee; border-radius: 20px; margin-bottom: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-.modal-img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
-.m-title { font-family: 'Grandstander'; font-size: 2.2rem; color: var(--sbatuffo-blue); margin: 10px 0; }
-.nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: var(--primary); color: #fff; border: 4px solid #fff; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; font-weight: 900; }
-.btn-p { left: -25px; } .btn-n { right: -25px; }
-.close-x { position: absolute; top: -15px; right: -15px; background: #333; color: #fff; border: 3px solid #fff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
+  .palette-slider-container { position: absolute; bottom: 20px; left: 20px; width: 75%; background: rgba(0,0,0,0.15); border-radius: 15px; padding: 6px 12px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3); box-sizing: border-box; transform: rotate(5deg); }
+  .art-scrollbar { width: 100%; appearance: none; background: transparent; cursor: pointer; }
+  .art-scrollbar::-webkit-slider-runnable-track { width: 100%; height: 8px; background: linear-gradient(to right, #ff4500, #ffd700, #32cd32, #1e90ff, #9400d3); border-radius: 5px; }
+  .art-scrollbar::-webkit-slider-thumb { appearance: none; width: 22px; height: 22px; background: #fff; border: 4px solid #333; border-radius: 50%; margin-top: -7px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
-@media (max-width: 768px) {
-    .header-container { flex-direction: column; text-align: center; }
-    .nav-btn { position: static; transform: none; margin: 10px 20px; }
-}
+  /* --- LULU SOFA --- */
+  /* Modifica 2: Ridotto padding top per avvicinare titolo e divano al divisore superiore */
+  .lulu-sofa-section { padding: 30px 0 60px 0; background: #fff; } 
+  .sofa-external-wrapper { position: relative; padding: 20px 80px; max-width: 750px; margin: 0 auto; transition: all 0.3s ease; }
+  .sofa-main-body { position: relative; background: #004d40; border-radius: 50px 50px 10px 10px; box-shadow: inset 0 15px 40px rgba(0,0,0,0.6); padding: 40px 30px 15px 30px; z-index: 2; }
+  .armrest { position: absolute; bottom: 0; width: 100px; height: 240px; background: linear-gradient(to bottom, #00332c, #002621); border-radius: 40px 40px 15px 15px; box-shadow: 10px 15px 30px rgba(0,0,0,0.5), inset 0 10px 15px rgba(255,255,255,0.05); z-index: 4; transition: width 0.3s ease, height 0.3s ease; }
+  .arm-l { left: 0; }
+  .arm-r { right: 0; }
+  .sofa-backrest { display: flex; justify-content: center; gap: 25px; margin-bottom: 20px; perspective: 1000px; position: relative; }
+  .sofa-backrest::after { content: ""; position: absolute; top: -20px; bottom: -10px; left: 50%; width: 2px; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.4) 20%, rgba(0,0,0,0.4) 80%, transparent); box-shadow: 0 0 10px rgba(0,0,0,0.3); transform: translateX(-50%); z-index: 1; pointer-events: none; }
+  .cushion-container { position: relative; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4)); transition: transform 0.3s ease; z-index: 3; }
+  .cushion { width: var(--cushion-w, 240px); height: var(--cushion-h, 220px); background: radial-gradient(circle at 50% 50%, #fffdf5 0%, #fefae0 70%, #f5f5dc 100%); clip-path: url(#concave-cushion-shape); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+  .cushion img { width: 86%; height: 86%; object-fit: cover; opacity: 0; transition: opacity 0.3s ease; clip-path: url(#concave-cushion-shape); }
+  .sofa-seam-scroll-container { width: 100%; height: 18px; background: #002621; border-radius: 10px; position: relative; box-shadow: inset 0 3px 5px rgba(0,0,0,0.7); margin-top: 25px; touch-action: none; }
+  #sofa-cat-thumb { position: absolute; top: -45px; width: 110px; height: 80px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="80" viewBox="0 0 120 80"><text y="60" x="10" font-size="65" filter="grayscale(1) brightness(0.8)" transform="scale(-1, 1) translate(-120, 0)">🐈‍⬛</text></svg>'); background-repeat: no-repeat; background-position: center; cursor: grab; z-index: 5; left: 0; }
+  .sofa-base { height: 40px; background: linear-gradient(to bottom, #1a1a1a, #0d0d0d); width: 100%; border-radius: 0 0 20px 20px; position: relative; top: -10px; }
+
+  /* --- GLI SFIGATINI --- */
+  .sfigatini-section { padding: 80px 0; background: #000; color: white; overflow: hidden; position: relative; }
+  .horror-title-wrapper { display: inline-flex; align-items: center; justify-content: center; position: relative; gap: 20px; }
+  .ghost-icon { font-size: 60px; animation: floatGhost 3s infinite ease-in-out; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+  @keyframes floatGhost { 0%, 100% { transform: translateY(0) rotate(5deg); } 50% { transform: translateY(-15px) rotate(-5deg); } }
+  
+  .cinema-container { position: relative; width: 95%; max-width: 1000px; margin: 40px auto 0; background: #000; border: 8px solid #1a1a1a; box-shadow: 0 0 80px rgba(255,0,0,0.5); }
+  .cinema-container::after { content: ""; position: absolute; top: -30px; left: -30px; right: -30px; bottom: 0; background: radial-gradient(ellipse at top, rgba(255,0,0,0.2) 0%, transparent 70%); pointer-events: none; z-index: 1; }
+  .web-corner {
+    position: absolute; top: -10px; right: -10px; width: 200px; height: 200px;
+    background: radial-gradient(circle at top right, transparent 20px, rgba(255,255,255,0.1) 20px, rgba(255,255,255,0.1) 21px, transparent 21px), radial-gradient(circle at top right, transparent 40px, rgba(255,255,255,0.1) 40px, rgba(255,255,255,0.1) 41px, transparent 41px), radial-gradient(circle at top right, transparent 60px, rgba(255,255,255,0.1) 60px, rgba(255,255,255,0.1) 61px, transparent 61px), radial-gradient(circle at top right, transparent 80px, rgba(255,255,255,0.1) 80px, rgba(255,255,255,0.1) 81px, transparent 81px), radial-gradient(circle at top right, transparent 100px, rgba(255,255,255,0.1) 100px, rgba(255,255,255,0.1) 101px, transparent 101px), linear-gradient(45deg, transparent 49.5%, rgba(255,255,255,0.15) 50%, transparent 50.5%), linear-gradient(15deg, transparent 49.5%, rgba(255,255,255,0.15) 50%, transparent 50.5%), linear-gradient(75deg, transparent 49.5%, rgba(255,255,255,0.15) 50%, transparent 50.5%), linear-gradient(to bottom, transparent 49.5%, rgba(255,255,255,0.1) 50%, transparent 50.5%) 100% 0 / 100% 200%, linear-gradient(to left, transparent 49.5%, rgba(255,255,255,0.1) 50%, transparent 50.5%) 0 100% / 200% 100%;
+    z-index: 15; pointer-events: none;
+  }
+  .spider-hanging { position: absolute; top: 85px; right: 90px; width: 1px; height: 0; background: rgba(255,255,255,0.4); z-index: 16; animation: spiderMove 8s infinite; }
+  .spider-hanging::after { content: "🕷️"; position: absolute; bottom: -15px; left: -10px; font-size: 20px; }
+  @keyframes spiderMove { 0%, 100% { height: 20px; } 50% { height: 180px; } }
+  
+  .cinema-screen { position: relative; background: #000; height: 450px; overflow: hidden; display: flex; align-items: center; cursor: grab; }
+  .cinema-screen:active { cursor: grabbing; }
+  .film-strip { display: flex; gap: 0; will-change: transform; user-select: none; }
+  .film-frame { flex: 0 0 350px; height: 280px; margin: 0 10px; position: relative; display: flex; align-items: center; justify-content: center; background: #111; border-top: 25px solid #222; border-bottom: 25px solid #222; }
+  .film-frame::before, .film-frame::after { content: ""; position: absolute; left: 0; width: 100%; height: 15px; background-image: radial-gradient(circle, #000 50%, transparent 50%); background-size: 30px 30px; background-repeat: repeat-x; }
+  .film-frame::before { top: -20px; }
+  .film-frame::after { bottom: -20px; }
+  .film-frame img { max-width: 90%; max-height: 90%; object-fit: contain; filter: sepia(0.3) contrast(1.1); border: 1px solid #333; pointer-events: none; }
+  
+  .zombie-fallback { position: absolute; bottom: -10px; width: 100%; display: flex; justify-content: space-around; align-items: flex-end; pointer-events: none; z-index: 20; padding: 0 20px; box-sizing: border-box; }
+  .zombie-container { display: flex; flex-direction: column; align-items: center; position: relative; }
+  .zombie-head { width: 50px; height: 70px; background: #1a1e12; border-radius: 40% 40% 10% 10%; position: relative; box-shadow: 0 0 15px black; transform-origin: bottom; animation: zombieSway 3s infinite ease-in-out alternate; z-index: 2; }
+  .zombie-head::after { content: "° °"; color: var(--zombie-eye); font-size: 16px; position: absolute; top: 15px; left: 13px; text-shadow: 0 0 8px var(--zombie-eye); }
+  .tombstone { width: 40px; height: 50px; background: #333; border-radius: 15px 15px 0 0; border: 1px solid #444; position: relative; z-index: 1; }
+  .cross { width: 10px; height: 45px; background: #222; position: relative; z-index: 1; }
+  .cross::after { content: ""; width: 30px; height: 10px; background: #222; position: absolute; top: 12px; left: -10px; }
+  @keyframes zombieSway { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+
+  /* --- FOOTER --- */
+  footer { background: #fff; padding: 20px 10px 40px; border-top: 2px solid #eee; }
+  .footer-container { display: flex; justify-content: center; align-items: center; position: relative; max-width: 1100px; margin: 0 auto; }
+  .footer-home { position: absolute; left: 20px; }
+  .footer-home img { width: clamp(50px, 8vw, 70px); height: auto; }
+  .footer-text { font-family: 'Grandstander', cursive; font-weight: 600; font-size: 1.2rem; color: #444; }
+
+  /* --- MEDIA QUERIES --- */
+  @media (max-width: 768px) {
+    :root { --cushion-w: 200px; --cushion-h: 180px; }
+    .sofa-external-wrapper { padding: 20px 60px; }
+    .armrest { width: 70px; height: 200px; }
+  }
+  @media (max-width: 480px) {
+    :root { --cushion-w: 155px; --cushion-h: 145px; }
+    .sofa-external-wrapper { padding: 20px 40px; }
+    .armrest { width: 45px; height: 160px; }
+    .sofa-main-body { padding: 30px 10px 10px 10px; }
+    .sofa-backrest { gap: -30px; } 
+    .cushion-container:first-child { transform: rotate(-8deg) translateX(8px); z-index: 3; }
+    .cushion-container:last-child { transform: rotate(8deg) translateX(-8px); z-index: 4; }
+    #sofa-cat-thumb { width: 90px; top: -38px; }
+
+    .camera-body { width: 200px; height: 130px; }
+    .camera-lens-big { width: 70px; height: 70px; margin: 25px auto 0; }
+    .camera-base-scroll { width: 240px; }
+    .film-frame-gif { flex: 0 0 160px; height: 120px; }
+
+    .art-canvas { height: 260px; border-width: 10px; margin: 20px 0 60px 0; }
+    .palette { width: 230px; height: 150px; }
+    .palette-hole { width: 30px; height: 35px; top: 20px; left: 20px; }
+    .paint-blob { transform: scale(0.8); }
+    .brush { width: 110px; height: 10px; }
+    .easel-crossbar { bottom: 18%; }
+    
+    .footer-home { position: static; margin-right: 15px; }
+  }
 </style>
 </head>
+
 <body>
 
 <header>
   <div class="header-container">
     <a href="../index.html" class="home-link-img"><img src="img/home.png" alt="Home"></a>
-    <div class="brand-group">
-      <h1 class="brand-title">SbatuffoBlog</h1>
-      <p class="brand-subtitle">Pandaccessori</p>
+    <div class="brand-wrapper">
+      <a href="../index.html" class="brand-title">SbatuffoBlog</a>
+      <div class="brand-subtitle">Pandosità</div>
     </div>
   </div>
 </header>
 
-<div class="intro-stats">
-    <h2>Mappa dei PandAccessori</h2>
-    <p>In totale abbiamo <span id="tot-globale">0</span> pandaccessori!</p>
-</div>
+<div class="section-divider"></div>
 
-<section class="map-outer">
-    <div class="map-canvas">
-        <div class="m-road h"></div>
-        <div class="m-road v"></div>
-        <div class="m-bus"></div>
+<section class="stickers-section">
+  <h2 class="section-title">Panda Stickers</h2>
+  <p class="section-subtitle">Scorri verso il basso per vedere tutti i nostri panda stickers!</p>
+  <div class="phone-wrapper">
+    <div class="floating-heart" style="top: 10%; left: -110px;">❤️</div>
+    <div class="floating-heart" style="top: 50%; left: -130px; animation-delay: 1s;">💖</div>
+    <div class="pulsing-star" style="top: 30%; left: -80px;">⭐</div>
+    <div class="floating-heart" style="top: 20%; right: -110px; animation-delay: 0.5s;">❤️</div>
+    <div class="floating-heart" style="bottom: 20%; right: -130px; animation-delay: 1.5s;">💕</div>
+    <div class="pulsing-star" style="top: 40%; right: -85px; animation-delay: 0.8s;">✨</div>
+    <div class="phone-container">
+      <div class="phone-top-sensors"><div class="speaker-grill"></div><div class="camera-lens"></div></div>
+      <div class="phone-screen"><div class="stickers-display" id="sticker-phone-gallery"></div></div>
+      <div class="phone-button"></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="gif-section">
+  <h2 class="section-title">Panda Gif</h2>
+  <p class="section-subtitle">Ti sbatuffolo animatamente</p>
+  <div class="camera-display-container">
+    <div class="film-roll-container" id="gif-scroll-container">
+      <div class="film-strip-gifs" id="gif-gallery"></div>
+    </div>
+    <div class="camera-body">
+      <div class="camera-flash"></div>
+      <div class="camera-lens-big"><div class="camera-lens-inner"></div></div>
+    </div>
+    <div class="camera-base-scroll">
+      <input type="range" class="custom-scrollbar-input" id="camera-scrollbar" min="0" value="0" step="1">
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="sbatuffolart-section">
+  <h2 class="section-title">Sbatuffolart</h2>
+  <p class="section-subtitle">Quando sbatuffolare diventa arte</p>
+  <div class="art-container">
+      <div class="easel">
+          <div class="easel-back-leg"></div>
+          <div class="easel-leg-left"></div>
+          <div class="easel-leg-right"></div>
+          <div class="easel-crossbar"></div>
+          <div class="easel-top"></div>
+          
+          <div class="art-canvas">
+              <div class="canvas-splatters"></div>
+              <div class="art-gallery-container" id="sbatuffolart-gallery"></div>
+          </div>
+      </div>
+      
+      <div class="palette-wrapper">
+          <div class="brush brush-1"></div>
+          <div class="brush brush-2"></div>
+          
+          <div class="palette">
+              <div class="palette-hole"></div>
+              <div class="paint-blob blob-1"></div>
+              <div class="paint-blob blob-2"></div>
+              <div class="paint-blob blob-3"></div>
+              <div class="paint-blob blob-4"></div>
+              
+              <div class="palette-text">TVB</div>
+
+              <div class="palette-slider-container">
+                  <input type="range" class="art-scrollbar" id="art-scrollbar" min="0" value="0" step="1">
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<div class="section-divider" style="margin: 40px auto 10px;"></div>
+
+<section class="lulu-sofa-section">
+  <h2 class="section-title">Lulu meno male che ci sei tu</h2>
+  <p class="section-subtitle">Dove starà dormendo adesso la Lulu?</p>
+  <div class="sofa-external-wrapper">
+    <div class="armrest arm-l"></div>
+    <div class="armrest arm-r"></div>
+    
+    <div class="sofa-main-body">
+      <div class="sofa-backrest">
+        <div class="cushion-container">
+          <div class="cushion">
+            <img id="lulu-c-1" src="" alt="Lulu">
+          </div>
+        </div>
+        <div class="cushion-container">
+          <div class="cushion">
+            <img id="lulu-c-2" src="" alt="Lulu">
+          </div>
+        </div>
+      </div>
+      
+      <div class="sofa-seam-scroll-container" id="lulu-sofa-seam">
+        <div id="sofa-cat-thumb"></div>
+      </div>
+    </div>
+    <div class="sofa-base"></div>
+  </div>
+</section>
+
+<div class="section-divider" style="margin: 40px auto;"></div>
+
+<section class="sfigatini-section">
+    <div class="horror-title-wrapper">
+        <h2 class="section-title" style="color: #900; font-family: 'Courier New', Courier; margin: 0;">GLI SFIGATINI</h2>
+        <div class="ghost-icon">👻</div>
+    </div>
+    <p class="section-subtitle" style="color: var(--zombie-eye); margin-top: 10px;">Ricordi da film horror</p>
+    
+    <div class="cinema-container">
+        <div class="web-corner"></div>
+        <div class="spider-hanging"></div>
+        <div class="cinema-screen" id="cinema-interact"><div class="film-strip" id="sfigatini-engine"></div></div>
         
-        <div class="m-condo">
-            <div class="roof"></div>
-            <div class="balcony"><span class="flower">✿</span></div>
-            <div class="balcony"><span class="flower">✿</span></div>
-            <div class="balcony"><span class="flower">✿</span></div>
+        <div class="zombie-fallback">
+          <div class="zombie-container"><div class="zombie-head"></div></div>
+          <div class="zombie-container" style="transform:translateY(-10px)"><div class="cross"></div></div>
+          <div class="zombie-container"><div class="zombie-head" style="height:85px; animation-delay: 0.5s;"></div></div>
+          <div class="zombie-container" style="transform:translateY(-5px)"><div class="tombstone"></div></div>
+          <div class="zombie-container"><div class="zombie-head" style="animation-delay: 1.2s;"></div></div>
+          <div class="zombie-container" style="transform:translateY(-15px)"><div class="cross"></div></div>
+          <div class="zombie-container"><div class="zombie-head" style="height:60px; animation-delay: 0.8s;"></div></div>
+          <div class="zombie-container" style="transform:translateY(-8px)"><div class="tombstone"></div></div>
+          <div class="zombie-container"><div class="zombie-head" style="height:90px; animation-delay: 0.2s;"></div></div>
+          <div class="zombie-container" style="transform:translateY(-12px)"><div class="cross"></div></div>
         </div>
-        <a href="#sec-casa" class="m-pin" style="bottom: 350px; left: 11%;">
-            <div class="pin-label">📍 Casa <span id="c-casa">0</span></div>
-        </a>
-
-        <div class="m-car-blue"></div>
-        <a href="#sec-konad" class="m-pin" style="bottom: 100px; left: 18%;">
-            <div class="pin-label" style="background:#0984e3;">🚗 Konad <span id="c-konad">0</span></div>
-        </a>
-
-        <div class="m-office">
-            <div class="win-grid">
-                <div class="win"></div><div class="win"></div>
-                <div class="win"></div><div class="win"></div>
-            </div>
-        </div>
-        <a href="#sec-progetto" class="m-pin" style="top: 100px; left: 24%;">
-            <div class="pin-label" style="background:#2d3436;">🏢 Progetto <span id="c-progetto">0</span></div>
-        </a>
-
-        <div class="m-hill"></div>
-        <div class="m-house-small"></div>
-        <a href="#sec-cameretta" class="m-pin" style="top: 60px; right: 22%;">
-            <div class="pin-label" style="background:#a29bfe;">🏠 Cameretta <span id="c-cameretta">0</span></div>
-        </a>
-
-        <div class="m-car-red"></div>
-        <a href="#sec-gazy" class="m-pin" style="top: 150px; right: 14%;">
-            <div class="pin-label" style="background:#d63031;">🚗 Gazy <span id="c-gazy">0</span></div>
-        </a>
     </div>
 </section>
 
-<div class="section-divider">♥</div>
+<div class="section-divider"></div>
 
-<div class="section-container" id="sec-casa">
-    <h2 class="gallery-title">Casa Sbatuffolone</h2>
-    
-    <div class="plani-box" id="plani-casa">
-        <div class="p-room p-salotto" onclick="openModalRoom('salotto')">
-            Salotto <div class="room-badge" id="b-salotto">0</div>
-        </div>
-        <div class="p-room p-cucina" onclick="openModalRoom('cucina')">
-            Cucina <div class="room-badge" id="b-cucina">0</div>
-        </div>
-        <div class="p-room p-bagno" onclick="openModalRoom('bagno')">
-            Bagno <div class="room-badge" id="b-bagno">0</div>
-        </div>
-        <div class="p-room p-terrazzo" onclick="openModalRoom('terrazzo')">
-            Terrazzo <div class="room-badge" id="b-terrazzo">0</div>
-        </div>
-        <div class="p-room p-corridoio" onclick="openModalRoom('corridoio')">
-            Corridoio <div class="room-badge" id="b-corridoio">0</div>
-        </div>
-        <div class="p-room p-lettone" onclick="openModalRoom('lettone')">
-            Lettone <div class="room-badge" id="b-lettone">0</div>
-        </div>
-    </div>
+<footer>
+    <div class="footer-container">
+    <a href="../index.html" class="footer-home"><img src="img/home.png" alt="Home"></a>
+    <div class="footer-text">@SbatuffoBlog 2026</div>
+  </div>
+</footer>
 
-    <div id="casa-galleries-container"></div>
-</div>
-
-<div class="section-divider">♥</div>
-
-<div class="section-container" id="sec-konad">
-    <div class="gallery-card">
-        <h2 class="gallery-title">Konad</h2>
-        <div class="grid-mini" id="grid-konad"></div>
-    </div>
-</div>
-
-<div class="section-divider">♥</div>
-
-<div class="section-container" id="sec-progetto">
-    <div class="gallery-card">
-        <h2 class="gallery-title">Progetto</h2>
-        <div class="grid-mini" id="grid-progetto"></div>
-    </div>
-</div>
-
-<div class="section-divider">♥</div>
-
-<div class="section-container" id="sec-cameretta">
-    <div class="gallery-card">
-        <h2 class="gallery-title">Cameretta</h2>
-        <div class="grid-mini" id="grid-cameretta"></div>
-    </div>
-</div>
-
-<div class="section-divider">♥</div>
-
-<div class="section-container" id="sec-gazy">
-    <div class="gallery-card">
-        <h2 class="gallery-title">Gazy</h2>
-        <div class="grid-mini" id="grid-gazy"></div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="lightbox">
-    <div class="modal-body">
-        <button class="close-x" onclick="closeModal()">×</button>
-        <button class="nav-btn btn-p" onclick="nav(-1)">❮</button>
-        <div class="modal-img-container">
-            <img src="" id="l-img">
-        </div>
-        <h2 class="m-title" id="l-title">Titolo</h2>
-        <button class="nav-btn btn-n" onclick="nav(1)">❯</button>
-    </div>
-</div>
+<svg width="0" height="0" style="position: absolute;">
+  <defs>
+    <clipPath id="concave-cushion-shape" clipPathUnits="objectBoundingBox">
+      <path d="M 0,0 Q 0.5,0.12 1,0 Q 0.88,0.5 1,1 Q 0.5,0.88 0,1 Q 0.12,0.5 0,0 Z" />
+    </clipPath>
+  </defs>
+</svg>
 
 <script>
-// ==========================================
-// DATABASE FOTOGRAFICO CENTRALIZZATO
-// Aggiungi qui le tue foto rispettando i nomi delle cartelle!
-// Non servono descrizioni e coordinate, solo Titolo e Immagine.
-// ==========================================
-const DB = {
-    casa: {
-        salotto: [
-            { titolo: 'Esempio Salotto 1', immagine: 'img/casasbatuffolone/salotto/foto1.jpg' },
-            { titolo: 'Esempio Salotto 2', immagine: 'img/casasbatuffolone/salotto/foto2.jpg' }
-        ],
-        cucina: [
-            { titolo: 'Esempio Cucina 1', immagine: 'img/casasbatuffolone/cucina/foto1.jpg' }
-        ],
-        bagno: [],
-        corridoio: [],
-        terrazzo: [],
-        lettone: [
-            { titolo: 'Esempio Lettone 1', immagine: 'img/casasbatuffolone/lettone/foto1.jpg' }
-        ]
-    },
-    konad: [
-        { titolo: 'Esempio Konad 1', immagine: 'img/konad/foto1.jpg' }
-    ],
-    progetto: [
-        { titolo: 'Esempio Progetto 1', immagine: 'img/progetto/foto1.jpg' }
-    ],
-    cameretta: [
-        { titolo: 'Esempio Cameretta 1', immagine: 'img/cameretta/foto1.jpg' }
-    ],
-    gazy: [
-        { titolo: 'Esempio Gazy 1', immagine: 'img/gazy/foto1.jpg' }
-    ]
-};
-
-let activeSet = [];
-let activeIdx = 0;
-
-document.addEventListener('DOMContentLoaded', () => {
-    let totaleGenerale = 0;
-
-    // --- 1. GESTIONE CASA SBATUFFOLONE (Stanze, Contatori e Gallerie) ---
-    let totaleCasa = 0;
-    const casaContainer = document.getElementById('casa-galleries-container');
-
-    for (let stanza in DB.casa) {
-        let items = DB.casa[stanza];
-        let conteggio = items.length;
-        totaleCasa += conteggio;
-        totaleGenerale += conteggio;
-
-        // Aggiorna badge nella planimetria
-        let badge = document.getElementById(`b-${stanza}`);
-        if(badge) badge.innerText = conteggio;
-
-        // Crea dinamicamente la sezione Galleria sotto la planimetria
-        if (conteggio > 0) {
-            let stanzaCapitalizzata = stanza.charAt(0).toUpperCase() + stanza.slice(1);
-            let sectionHTML = `
-                <div class="gallery-card">
-                    <h3 class="brand-subtitle" style="margin-bottom:20px; font-size:1.8rem;">Raccolta PandAccessori ${stanzaCapitalizzata}</h3>
-                    <div class="grid-mini" id="grid-${stanza}"></div>
-                </div>
-            `;
-            casaContainer.insertAdjacentHTML('beforeend', sectionHTML);
-            // Popola le miniature
-            renderGrid(`grid-${stanza}`, items);
-        }
+  function loadPhoneStickers() {
+    const container = document.getElementById('sticker-phone-gallery');
+    for (let i = 1; i <= 116; i++) {
+      const div = document.createElement('div');
+      div.className = 'sticker-item-phone';
+      div.innerHTML = `<img src="img/sticker/sticker (${i}).webp" onerror="this.remove()">`;
+      container.appendChild(div);
     }
-    // Aggiorna Map Pin di Casa Sbatuffolone (Totale casa)
-    document.getElementById('c-casa').innerText = totaleCasa;
+  }
 
-    // --- 2. GESTIONE ALTRI AMBIENTI ---
-    const altriAmbienti = ['konad', 'progetto', 'cameretta', 'gazy'];
-    altriAmbienti.forEach(ambiente => {
-        let items = DB[ambiente];
-        let conteggio = items.length;
-        totaleGenerale += conteggio;
+  async function loadGifs() {
+    const container = document.getElementById('gif-gallery');
+    const scrollContainer = document.getElementById('gif-scroll-container');
+    const scrollbar = document.getElementById('camera-scrollbar');
 
-        // Aggiorna Map Pin
-        document.getElementById(`c-${ambiente}`).innerText = conteggio;
-        
-        // Popola la griglia
-        renderGrid(`grid-${ambiente}`, items);
-    });
+    let i = 1;
+    let failCount = 0;
 
-    // --- 3. AGGIORNA CONTATORE GLOBALE ---
-    document.getElementById('tot-globale').innerText = totaleGenerale;
-});
+    while (failCount < 5) {
+      const mp4Src = `img/gif/pandagif (${i}).mp4`;
+      const gifSrc = `img/gif/pandagif (${i}).gif`;
 
-// Funzione che stampa le miniature nella griglia corretta
-function renderGrid(gridId, items) {
-    const grid = document.getElementById(gridId);
-    if(!grid) return;
-    
-    items.forEach((item, idx) => {
+      const exists = await new Promise(resolve => {
+        const video = document.createElement('video');
+        video.src = mp4Src;
+        video.onloadeddata = () => resolve('mp4');
+        video.onerror = () => {
+          const img = new Image();
+          img.src = gifSrc;
+          img.onload = () => resolve('gif');
+          img.onerror = () => resolve(false);
+        };
+      });
+
+      if (exists === 'mp4') {
         const div = document.createElement('div');
-        div.className = 'thumb-item';
-        div.onclick = () => openModal(items, idx);
-        
-        // Immagine + Titolo della foto sovraimpresso
+        div.className = 'film-frame-gif';
         div.innerHTML = `
-            <img src="${item.immagine}" onerror="this.src='https://via.placeholder.com/150?text=Panda'">
-            <div class="thumb-title">${item.titolo}</div>
-        `;
-        grid.appendChild(div);
-    });
-}
+          <video autoplay loop muted playsinline>
+            <source src="${mp4Src}" type="video/mp4">
+          </video>`;
+        container.appendChild(div);
+        failCount = 0;
 
-// Funzione richiamata cliccando le stanze della planimetria
-function openModalRoom(stanzaId) {
-    let items = DB.casa[stanzaId];
-    if (items && items.length > 0) {
-        openModal(items, 0);
-    } else {
-        alert("Nessun Pandaccessorio ancora caricato in questa stanza!");
+      } else if (exists === 'gif') {
+        const div = document.createElement('div');
+        div.className = 'film-frame-gif';
+        div.innerHTML = `<img src="${gifSrc}" style="width:100%;height:100%;object-fit:cover;">`;
+        container.appendChild(div);
+        failCount = 0;
+
+      } else {
+        failCount++;
+      }
+
+      i++;
     }
-}
 
-// --- LOGICA MODALE (Carosello) ---
-function openModal(set, idx) {
-    activeSet = set;
-    activeIdx = idx;
-    updateModal();
-    document.getElementById('lightbox').classList.add('active');
-}
+    setTimeout(() => {
+      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      scrollbar.max = maxScroll;
 
-function closeModal() {
-    document.getElementById('lightbox').classList.remove('active');
-}
+      scrollbar.addEventListener('input', () => {
+        scrollContainer.scrollLeft = scrollbar.value;
+      });
 
-function nav(d) {
-    activeIdx += d;
-    if(activeIdx < 0) activeIdx = activeSet.length - 1;
-    if(activeIdx >= activeSet.length) activeIdx = 0;
-    updateModal();
-}
+      scrollContainer.addEventListener('scroll', () => {
+        scrollbar.value = scrollContainer.scrollLeft;
+      });
+    }, 500);
+  }
 
-function updateModal() {
-    const it = activeSet[activeIdx];
-    document.getElementById('l-img').src = it.immagine;
-    document.getElementById('l-title').innerText = it.titolo;
-}
+  async function loadSbatuffolart() {
+    const container = document.getElementById('sbatuffolart-gallery');
+    const scrollbar = document.getElementById('art-scrollbar');
+
+    let i = 1;
+    let failCount = 0;
+
+    while (failCount < 5) {
+      const src = `img/sbatuffolart/sbatuffolart (${i}).jpg`;
+
+      const exists = await new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = src;
+      });
+
+      if (exists) {
+        const div = document.createElement('div');
+        div.className = 'art-frame';
+        div.innerHTML = `<img src="${src}">`;
+        container.appendChild(div);
+        failCount = 0;
+      } else {
+        failCount++;
+      }
+
+      i++;
+    }
+
+    setTimeout(() => {
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      scrollbar.max = maxScroll;
+
+      scrollbar.addEventListener('input', () => {
+        container.scrollLeft = scrollbar.value;
+      });
+
+      container.addEventListener('scroll', () => {
+        scrollbar.value = container.scrollLeft;
+      });
+    }, 500);
+  }
+
+  async function buildSfigatini() {
+    const engine = document.getElementById('sfigatini-engine');
+    const screen = document.getElementById('cinema-interact');
+    for (let i = 1; i <= 53; i++) {
+        const frame = document.createElement('div');
+        frame.className = 'film-frame';
+        frame.innerHTML = `<img src="img/sfigatini/sfigatini (${i}).jpg" onerror="this.remove()">`;
+        engine.appendChild(frame);
+    }
+    engine.innerHTML += engine.innerHTML;
+    let currentX = 0; let baseSpeed = 1; let currentSpeed = 1; let targetSpeed = 1;
+    screen.addEventListener('mousedown', () => { targetSpeed = 15; });
+    window.addEventListener('mouseup', () => { targetSpeed = baseSpeed; });
+    function animate() {
+      currentSpeed += (targetSpeed - currentSpeed) * 0.05;
+      currentX -= currentSpeed;
+      if (Math.abs(currentX) >= engine.scrollWidth / 2) currentX = 0;
+      engine.style.transform = `translateX(${currentX}px)`;
+      requestAnimationFrame(animate);
+    }
+    animate();
+  }
+
+  (async function initLuluSofa() {
+      const img1 = document.getElementById('lulu-c-1');
+      const img2 = document.getElementById('lulu-c-2');
+      const seam = document.getElementById('lulu-sofa-seam');
+      const catThumb = document.getElementById('sofa-cat-thumb');
+
+      const availableImages = [];
+      for (let i = 1; i <= 200; i++) {
+        const src = `img/lulu/lulu (${i}).jpg`;
+        const exists = await new Promise(r => {
+          const img = new Image();
+          img.onload = () => r(true);
+          img.onerror = () => r(false);
+          img.src = src;
+        });
+        if (exists) availableImages.push(src);
+        else if (i > 15) break; 
+      }
+
+      const count = availableImages.length;
+
+      function updateSofaPhotos(scrollX) {
+        if (count < 1) return;
+        const scrollRange = seam.clientWidth - catThumb.clientWidth;
+        const scrollPercent = Math.max(0, Math.min(1, scrollX / scrollRange));
+        
+        let index1 = Math.floor(scrollPercent * (count - 1));
+        let index2 = index1 + 1;
+
+        if (index1 >= 0 && index1 < count) {
+          img1.src = availableImages[index1];
+          img1.style.opacity = 1;
+        }
+        if (index2 < count) {
+          img2.src = availableImages[index2];
+          img2.style.opacity = 1;
+        } else {
+          img2.style.opacity = 0;
+        }
+      }
+
+      let isDragging = false;
+      let startX, initialLeft;
+
+      const startAction = (e) => {
+        isDragging = true;
+        startX = e.clientX || e.touches[0].clientX;
+        initialLeft = catThumb.offsetLeft;
+        document.body.style.userSelect = 'none';
+      };
+
+      const moveAction = (e) => {
+        if (!isDragging) return;
+        const currentX = (e.touches) ? e.touches[0].clientX : e.clientX;
+        const deltaX = currentX - startX;
+        let newLeft = initialLeft + deltaX;
+        const maxLeft = seam.clientWidth - catThumb.clientWidth;
+        newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+        catThumb.style.left = newLeft + 'px';
+        updateSofaPhotos(newLeft);
+      };
+
+      const stopAction = () => { isDragging = false; document.body.style.userSelect = 'auto'; };
+
+      catThumb.addEventListener('mousedown', startAction);
+      catThumb.addEventListener('touchstart', startAction, {passive: true});
+      window.addEventListener('mousemove', moveAction);
+      window.addEventListener('touchmove', moveAction, {passive: false});
+      window.addEventListener('mouseup', stopAction);
+      window.addEventListener('touchend', stopAction);
+
+      setTimeout(() => updateSofaPhotos(0), 500);
+  })();
+
+  loadPhoneStickers();
+  loadGifs();
+  loadSbatuffolart();
+  buildSfigatini();
 </script>
+
 </body>
 </html>
